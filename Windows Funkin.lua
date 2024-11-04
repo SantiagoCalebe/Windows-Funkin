@@ -1,4 +1,6 @@
 --press 6 in game
+local versionW = 6.1
+
 local sysLanguage = os.setlocale(nil, 'collate')
 local sysLanguage = sysLanguage:lower()
 
@@ -107,7 +109,7 @@ function onCreate()
     setTextAlignment('credits', 'left')
     addLuaText('credits')
 
-    makeLuaText('versionW', '6.1', 0, 0, 0)
+    makeLuaText('versionW', 'v'..versionW, 0, 0, 0)
     setTextSize('versionW', 40)
     setObjectCamera('versionW', 'other')
     setTextAlignment('versionW', 'right')
