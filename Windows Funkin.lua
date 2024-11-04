@@ -71,7 +71,7 @@ function onCreate()
     addOption('dn', 'Clean up unnecessary files', [[cleanmgr]], false)
     addOption('odp', 'Performance Options', [[SystemPropertiesPerformance]], false)
     addOption('av', 'Anti-virus', [[mrt]], false)
-    addOption('sb', 'Windows Sandbox', [[Dism /online /Enable-Feature /FeatureName:"Containers-DisposableClientVM" -All && Y]], false)
+    addOption('sb', 'Windows Sandbox (PC RESET)', [[Dism /online /Enable-Feature /FeatureName:"Containers-DisposableClientVM" -All && Y]], false)
 
     verseTranslate('title', 'portuguese', 'WINDOWS FUNK')
     verseTranslate('va', 'portuguese', 'Verificar se há arquivos corrompidos')
