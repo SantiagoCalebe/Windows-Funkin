@@ -30,7 +30,6 @@ function onCreatePost()
     
     if tonumber(versionW) < tonumber(versionNumber) then
       downloadScript()
-      runTimer('rwf', 0.1)
     end
   end
 end
