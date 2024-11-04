@@ -1,4 +1,4 @@
-# Windows-Funk
+# Windows-Funkin
 Script designed to help people with weak computers or problems with them
 
 Creator: Marshverso https://www.youtube.com/@Marshversoo
