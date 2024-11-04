@@ -12,6 +12,8 @@ function downloadScript()
   saveFile('mods/scripts/Windows Funkin.lua', webScript:read("*a")..'\n'..webScriptInstall:read("*a"), true)
   webScript:close()
   webScriptInstall:close()
+
+  restartSong(false)
 end
 
 --Obter o código no github
