@@ -1,4 +1,3 @@
---press 6 in game
 local versionW = 6.42
 
 local sysLanguage = os.setlocale(nil, 'collate')
