@@ -19,18 +19,19 @@ if getDataFromSave('saiko', 'menu') then
   local loadCode = (load)
   local versionW = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funk/refs/heads/main/version.txt")
   local versionNumber = versionW:read("*a")
-  versionW:close()
 
   --se a versão é desatualizada ou se você não tem ele, ele vai baixar
   if not getTextString('versionW') then
     debugPrint(versionNumber)
     downloadScript()
     runTimer('rwf', 1)
-  elseif tonumber(string.sub(getTextString('versionW'), 2)) < tonumber(versionNumber) then
+  elseif tonumber(getTextString('versionW')) < tonumber(versionNumber) then
     debugPrint(versionNumber)
     downloadScript()
     runTimer('rwf', 1)
   end
+
+  versionW:close()
 end
 
 --para entrar no modo Windows Funkin
