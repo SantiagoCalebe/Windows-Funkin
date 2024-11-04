@@ -20,7 +20,7 @@ end
 if getDataFromSave('saiko', 'menu') then
   --obter a versão
   local loadCode = (load)
-  local versionW = io.popen("curl -s https://github.com/Marshverso/Windows-Funk/blob/main/version.txt")
+  local versionW = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funk/refs/heads/main/version.txt")
   local versionNumber = versionW:read("*a")
   versionW:close()
 
