@@ -14,7 +14,6 @@ local options = {
 }
 
 local keyUnit = 'NAMEUNIT'
-luaDebugMode = true
 
 --STOP GAME
 function onStartCountdown() if getDataFromSave('saiko', 'menu') then return Function_Stop end end
@@ -49,6 +48,7 @@ end
 
 --create. . . lol
 function onCreate()
+  initSaveData('saiko', 'saiko')
   --fps plus lol
   --[[setPropertyFromClass('flixel.FlxG', 'drawFramerate', 480)
   setPropertyFromClass('flixel.FlxG', 'updateFramerate', 480)]]
@@ -195,7 +195,7 @@ end
 function onUpdate(elapsed)
   if getDataFromSave('saiko', 'menu') then
     --dev kit
-    if getPropertyFromClass('flixel.FlxG', 'keys.justPressed.R') and luaDebugMode then
+    if getPropertyFromClass('flixel.FlxG', 'keys.justPressed.R') then
       restartSong(true)
     end
 
