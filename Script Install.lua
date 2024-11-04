@@ -26,7 +26,7 @@ if getDataFromSave('saiko', 'menu') then
     versionW = 0
   end
   
-  if tonumber(versionW) < tonumber(versionNumber) then
+  if versionW < tonumber(versionNumber) then
     downloadScript()
     runTimer('rwf', 0.1)
   end
