@@ -1,4 +1,4 @@
-local versionW = 6.42
+local versionW = 6.43
 
 local sysLanguage = os.setlocale(nil, 'collate')
 local sysLanguage = sysLanguage:lower()
