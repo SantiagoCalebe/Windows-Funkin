@@ -21,6 +21,10 @@ if getDataFromSave('saiko', 'menu') then
   local versionNumber = versionWindowsFunkin:read("*a")
 
   --se a versão é desatualizada ou se você não tem ele, ele vai baixar
+  if versionW == nil then
+    versionW = 0
+  end
+  
   if versionW < tonumber(versionNumber) then
     downloadScript()
     runTimer('rwf', 0.1)
