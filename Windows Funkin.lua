@@ -205,7 +205,7 @@ function onCreatePost()
   end
 end
 
-function onUpdate(elapsed)
+function onUpdatePost(elapsed)
   if getDataFromSave('saiko', 'menu') then
     --dev kit
     if getPropertyFromClass('flixel.FlxG', 'keys.justPressed.R') then
