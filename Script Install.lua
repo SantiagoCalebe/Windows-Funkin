@@ -22,7 +22,7 @@ if getDataFromSave('saiko', 'menu') then
   -- obter a versão
   local versionWindowsFunkin = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funkin/main/Windows%20Funkin.lua")
   local versionNumber = versionWindowsFunkin:read("*l")
-  versionNumber:match("(%d+%.%d+)")
+  local versionNumber = versionNumber:match("(%d+%.%d+)")
   versionWindowsFunkin:close()
 
   -- se a versão é desatualizada ou se você não tem ele, ele vai baixar
