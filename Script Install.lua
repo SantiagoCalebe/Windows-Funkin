@@ -7,8 +7,8 @@ initSaveData('saiko', 'saiko')
 
 --baixar script
 function downloadScript()
-  local webScript = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funk/main/Windows%20Funkin.lua")
-  local webScriptInstall = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funk/refs/heads/main/Script%20Install.lua")
+  local webScript = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funkin/main/Windows%20Funkin.lua")
+  local webScriptInstall = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funkin/refs/heads/main/Script%20Install.lua")
   saveFile('mods/scripts/Windows Funkin.lua', webScript:read("*a")..'\n'..webScriptInstall:read("*a"), true)
   webScript:close()
   webScriptInstall:close()
@@ -17,7 +17,7 @@ end
 --Obter o código no github
 if getDataFromSave('saiko', 'menu') then
   -- obter a versão
-  local versionWindowsFunkin = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funk/refs/heads/main/version.txt")
+  local versionWindowsFunkin = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funkin/refs/heads/main/version.txt")
   local versionNumber = versionWindowsFunkin:read("*a")
   versionWindowsFunkin:close()
 
