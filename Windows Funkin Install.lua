@@ -23,9 +23,11 @@ if getDataFromSave('saiko', 'menu') then
 
   --se a versão é desatualizada ou se você não tem ele, ele vai baixar
   if not getTextString('versionW') then
+    debugPrint(versionNumber)
     downloadScript()
     runTimer('rwf', 1)
   elseif tonumber(string.sub(getTextString('versionW'), 2)) < tonumber(versionNumber) then
+    debugPrint(versionNumber)
     downloadScript()
     runTimer('rwf', 1)
   end
