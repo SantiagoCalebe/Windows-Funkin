@@ -82,6 +82,18 @@ function onCreate()
     verseTranslate('odp', 'portuguese', 'Opções de desempenho')
     verseTranslate('sb', 'portuguese', 'Emulador do windows (PC RESET)')
 
+    verseTranslate('title', 'spanish', 'WINDOWS FUNK')
+    verseTranslate('va', 'spanish', 'Buscar archivos dañados ')
+    verseTranslate('vh', 'spanish', 'Comprueba si el disco está dañado (C: REINICIA)') --professora de espanhol é foda
+    verseTranslate('vr', 'spanish', 'Comprobar ram (PC RESET)')
+    verseTranslate('rm', 'spanish', "Eliminar marca de agua de Windows (REINICIA EL PC)")
+    verseTranslate('desfrag', 'spanish', 'Optimice tu disco')
+    verseTranslate('cache', 'spanish', 'Borrar la caché')
+    verseTranslate('dn', 'spanish', 'Eliminar archivos inútiles')
+    verseTranslate('odp', 'spanish', 'Opciones de rendimiento')
+    verseTranslate('sb', 'spanish', 'Emulador de lo windows (REINICIA EL PC)')
+    -- Lo siento por cualquier cosa mal, lo hice para practicar mi español un poco :sob:
+
     makeLuaSprite('fundinho', '', -390, 0)
     makeGraphic('fundinho', screenWidth+100, screenHeight+120, '000000')
     setObjectCamera('fundinho', 'other')
@@ -89,7 +101,7 @@ function onCreate()
     addLuaSprite('fundinho', false)
 
     --credits
-    makeLuaText('credits', 'Creator: Marshverso (YT and DC)     Menu design: FacheFNF (DC)     Beta Testers: FandeFNF (ST) and Erislwlol(X)', 0, screenWidth, 10)
+    makeLuaText('credits', 'Creator: Marshverso (YT and DC)     Menu design: FacheFNF (DC)     Spanish Translator: Erislwlol(X)     Beta Testers: FandeFNF (ST) and Erislwlol(X)', 0, screenWidth, 10)
     setTextSize('credits', 25)
     setObjectCamera('credits', 'other')
     setTextAlignment('credits', 'left')
@@ -312,5 +324,6 @@ function onTweenCompleted(tag)
     doTweenX('creditsX', 'credits', -getProperty('credits.height')-getProperty('credits.x'), 15, 'linear')
   end
 end
+
 --Thank you to everyone who helped with the ideas
 --script by marshverso#0000
