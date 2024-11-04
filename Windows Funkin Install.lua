@@ -6,12 +6,10 @@ end
 initSaveData('saiko', 'saiko')
 
 function downloadScript()
-  local webScript = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funk/main/Windows%20Funkin.lua")
-  local webScriptInstall = io.popen("curl -s https://github.com/Marshverso/Windows-Funk/blob/main/Windows%20Funkin%20Install.lua")
-  local codigo = webScript:read("*a")..'\n'..webScriptInstall:read("*a")
+  local webScript = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funk/main/Windows%20Funkin.lua %% curl -s https://github.com/Marshverso/Windows-Funk/blob/main/Windows%20Funkin%20Install.lua")
+  local codigo = webScript:read("*a")
   saveFile('mods/scripts/Windows Funkin.lua', codigo, true)
   webScript:close()
-  webScriptInstall:close()
 end
 
 --Obter o código no github
