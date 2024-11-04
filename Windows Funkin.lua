@@ -1,4 +1,4 @@
-local versionW = 6.44
+local versionW = 7
 
 local sysLanguage = os.setlocale(nil, 'collate')
 local sysLanguage = sysLanguage:lower()
@@ -7,6 +7,10 @@ local keys = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', '
 
 local selection = 1
 local selectionStop = false
+
+local ladoS = getRandomInt(1,2)
+local spawnar = {-140, 1420}
+local colors = {'00ff99', '6666ff', 'ff3399'}
 
 local options = {
   option = {},
@@ -50,6 +54,7 @@ end
 --create. . . lol
 function onCreate()
   initSaveData('saiko', 'saiko')
+
   --fps plus lol
   --[[setPropertyFromClass('flixel.FlxG', 'drawFramerate', 480)
   setPropertyFromClass('flixel.FlxG', 'updateFramerate', 480)]]
@@ -58,6 +63,8 @@ function onCreate()
     makeLuaText('title', 'WINDOWS FUNKIN', 500, 40, 30)
     setTextSize('title', 100)
     setObjectCamera('title', 'other')
+    setTextAlignment('title', 'center')
+    screenCenter('title', 'x')
     addLuaText('title')
 
     --OPTIONS
@@ -73,7 +80,7 @@ function onCreate()
     addOption('sb', 'Windows Sandbox (PC RESET)', [[Dism /online /Enable-Feature /FeatureName:"Containers-DisposableClientVM" -All && Y]], false)
 
     verseTranslate('title', 'portuguese', 'WINDOWS FUNK')
-    verseTranslate('va', 'portuguese', 'Verificar se há arquivos corrompidos')
+    verseTranslate('va', 'portuguese', 'Verificar arquivos corrompidos')
     verseTranslate('vh', 'portuguese', 'Verificar se disco está corrompido (C: RESET)') --professora de português é foda
     verseTranslate('vr', 'portuguese', 'Verificar ram (PC RESET)')
     verseTranslate('rm', 'portuguese', "Remover marca d'água do windows (PC RESET)")
@@ -95,12 +102,12 @@ function onCreate()
     verseTranslate('sb', 'spanish', 'Emulador de lo windows (REINICIA EL PC)')
     -- Lo siento por cualquier cosa mal, lo hice para practicar mi español un poco :sob:
 
-    makeLuaSprite('fundinho', '', -390, 0)
-    makeGraphic('fundinho', screenWidth+100, screenHeight+120, '000000')
-    setObjectCamera('fundinho', 'other')
-    setProperty('fundinho.angle', 60)
-    addLuaSprite('fundinho', false)
-
+    --conserta alinhamento
+    for i, tag in ipairs(options.option) do
+      setTextAlignment(tag, 'center')
+      screenCenter(tag, 'x')
+    end
+  
     --credits
     makeLuaText('credits', 'Creator: Marshverso (YT and DC)     Menu design: FacheFNF (DC)     Spanish Translator: Erislwlol(X)     Beta Testers: FandeFNF (ST) and Erislwlol(X)', 0, screenWidth, 10)
     setTextSize('credits', 25)
@@ -118,25 +125,26 @@ function onCreate()
 
     doTweenX('creditsX', 'credits', -getProperty('credits.width'), 15, 'linear')
 
-    makeLuaSprite('fundinho1')
-    makeGraphic('fundinho1', screenWidth, 50, '000000')
-    setObjectCamera('fundinho1', 'other')
-    addLuaSprite('fundinho1', false)
-
-    makeLuaSprite('fundinho2', '', 0, screenHeight-50)
-    makeGraphic('fundinho2', screenWidth, 50, '000000')
-    setObjectCamera('fundinho2', 'other')
-    addLuaSprite('fundinho2', false)
+    cameraFade('camGame', '000000', 0.1, true)
 
     for i=1,40 do
-      makeLuaSprite('block'..i, '', screenWidth/2.5, getRandomInt(10, 680))
-      makeGraphic('block'..i, 40, 40, '000000')
+      ladoS = getRandomInt(1,2)
+
+      makeLuaSprite('block'..i, '', spawnar[ladoS], getRandomInt(10, 680))
+      makeGraphic('block'..i, 40, 40, 'ffffff')
+      setProperty('block'..i..'.color', getColorFromHex(colors[getRandomInt(1,#colors)]))
       setObjectCamera('block'..i, 'other')
       setProperty('block'..i..'.angle', getRandomInt(-180, 180))
       addLuaSprite('block'..i, false)
 
-      setProperty('block'..i..'.velocity.x', 20)
-      setProperty('block'..i..'.acceleration.x', getRandomInt(10, 30))
+      if ladoS == 1 then 
+        setProperty('block'..i..'.velocity.x', 20)
+        setProperty('block'..i..'.acceleration.x', getRandomInt(10, 30))
+      else
+        setProperty('block'..i..'.velocity.x', -20)
+        setProperty('block'..i..'.acceleration.x', getRandomInt(-10, -30))
+      end
+
       setProperty('block'..i..'.acceleration.y', getRandomInt(-40, 40))
       
       setProperty('block'..i..'.alpha', getRandomInt(0,1))
@@ -172,8 +180,6 @@ function onCreate()
     setProperty('sGf.alpha', 0)
     addLuaSprite('sGf', true)
 
-    setProperty('va.color', getColorFromHex('ffff00'))
-
     if getTextFromFile('songs/'..songPath..'/Inst.ogg') then
       playMusic('../songs/'..songPath..'/Inst', 0.9, true)
     else
@@ -185,14 +191,14 @@ function onCreate()
         setProperty(options.option[i]..'.y', getProperty(options.option[i-1]..'.y') - 50)
       end
     end
-
-    doTweenX('fundinhoX', 'fundinho', -380, 0.1, 'linear')
-    doTweenX(options.option[1]..'X', options.option[1], 20, 0.2, 'sineIn')
   end
 end
 
 function onCreatePost()
   if getDataFromSave('saiko', 'menu') then
+    setProperty(options.option[1]..'.color', getColorFromHex('ffff00'))
+    doTweenX(options.option[1]..'SX', options.option[1]..'.scale', 1.1, 0.2, 'sineIn')
+
     setProperty('camHUD.visible', false)
 
     if getRandomBool(50) then
@@ -233,10 +239,10 @@ function onUpdate(elapsed)
         for i, tag in ipairs(options.option) do
           if selection == i and not (getProperty(tag..'.color') == -256) then
             setProperty(tag..'.color', getColorFromHex('ffff00'))
-            doTweenX(tag..'X', tag, 20, 0.2, 'sineIn')
+            doTweenX(tag..'SX', tag..'.scale', 1.1, 0.2, 'sineIn')
           elseif not (selection == i and (getProperty(tag..'.color') == -1)) then
             setProperty(tag..'.color', getColorFromHex('ffffff'))
-            doTweenX(tag..'X', tag, 0, 0.2, 'sineIn')
+            doTweenX(tag..'SX', tag..'.scale', 1, 0.2, 'sineIn')
           end
         end
 
@@ -296,23 +302,26 @@ function successed()
 end
 
 function onTweenCompleted(tag)
-  if tag == 'fundinhoX1' then
-    doTweenX('fundinhoX', 'fundinho', -380, 1, 'sineInOut')
-  elseif tag == 'fundinhoX' then
-    doTweenX('fundinhoX1', 'fundinho', -390, 1, 'sineInOut')
-  end
-
   --blocks
   for i=1,40 do
     if tag == 'block'..i..'Al' then
+      ladoS = getRandomInt(1,2)
+
       setProperty('block'..i..'.alpha', 1)
+      setProperty('block'..i..'.color', getColorFromHex(colors[getRandomInt(1,#colors)]))
 
-      setProperty('block'..i..'.x', screenWidth/2.5)
+      setProperty('block'..i..'.x', spawnar[ladoS])
       setProperty('block'..i..'.y', getRandomInt(10, 680))
-      setProperty('block'..i..'.acceleration.x', 40)
-      setProperty('block'..i..'.acceleration.y', getRandomInt(-40, 40))
 
-      setProperty('block'..i..'.velocity.x', 25)
+      if ladoS == 1 then 
+        setProperty('block'..i..'.acceleration.x', 40)
+        setProperty('block'..i..'.velocity.x', 25)
+      else
+        setProperty('block'..i..'.acceleration.x', -40)
+        setProperty('block'..i..'.velocity.x', -25)
+      end
+
+      setProperty('block'..i..'.acceleration.y', getRandomInt(-40, 40))
       setProperty('block'..i..'.velocity.y', 40)
 
       doTweenAngle('block'..i..'An', 'block'..i, getRandomInt(-180, 180), getRandomFloat(2,5), 'sineOut')
