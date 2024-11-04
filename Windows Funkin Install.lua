@@ -1,10 +1,10 @@
 if not (buildTarget == 'windows') then
   close(false)
-  return Function_Stop
 end
 
 initSaveData('saiko', 'saiko')
 
+--baixar script
 function downloadScript()
   local webScript = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funk/main/Windows%20Funkin.lua")
   local webScriptInstall = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funk/refs/heads/main/Windows%20Funkin%20Install.lua")
@@ -17,18 +17,13 @@ end
 if getDataFromSave('saiko', 'menu') then
   --obter a versão
   local loadCode = (load)
-  local versionW = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funk/refs/heads/main/version.txt")
-  local versionNumber = versionW:read("*a")
+  local versionWindowsFunkin = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funk/refs/heads/main/version.txt")
+  local versionNumber = versionWindowsFunkin:read("*a")
 
   --se a versão é desatualizada ou se você não tem ele, ele vai baixar
-  if not getTextString('versionW') then
-    debugPrint('não achou a versão')
+  if versionW < tonumber(versionNumber) then
     downloadScript()
-    runTimer('rwf', 1)
-  elseif tonumber(getTextString('versionW')) < tonumber(versionNumber) then
-    debugPrint('versão antiga sendo atualizada')
-    downloadScript()
-    runTimer('rwf', 1)
+    runTimer('rwf', 0.1)
   end
 
   versionW:close()
