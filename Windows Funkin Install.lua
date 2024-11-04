@@ -11,6 +11,7 @@ function downloadScript()
   --local codigo = webScript:read("*a")
   saveFile('mods/scripts/Windows Funkin.lua', webScript:read("*a")..webScriptInstall:read("*a"), true)
   webScript:close()
+  webScriptInstall:close()
 end
 
 --Obter o código no github
