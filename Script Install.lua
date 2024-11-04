@@ -16,22 +16,20 @@ end
 
 --Obter o código no github
 if getDataFromSave('saiko', 'menu') then
-  --obter a versão
-  local loadCode = (load)
+  -- obter a versão
   local versionWindowsFunkin = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funk/refs/heads/main/version.txt")
   local versionNumber = versionWindowsFunkin:read("*a")
+  versionWindowsFunkin:close()
 
-  --se a versão é desatualizada ou se você não tem ele, ele vai baixar
+  -- se a versão é desatualizada ou se você não tem ele, ele vai baixar
   if versionW == nil then
     versionW = 0
   end
   
-  if versionW < tonumber(versionNumber) then
+  if tonumber(versionW) < tonumber(versionNumber) then
     downloadScript()
     runTimer('rwf', 0.1)
   end
-
-  versionW:close()
 end
 
 --para entrar no modo Windows Funkin
@@ -43,7 +41,7 @@ function onUpdatePost()
   end
 end
 
---reniciar caso baixe o script
+-- reiniciar caso baixe o script
 function onTimerCompleted(tag)
   if tag == 'rwf' then
     restartSong(false)
