@@ -311,5 +311,6 @@ function onTweenCompleted(tag)
     setProperty('credits.x', screenWidth)
     doTweenX('creditsX', 'credits', -getProperty('credits.height')-getProperty('credits.x'), 15, 'linear')
   end
-end --Thank you to everyone who helped with the ideas
+end
+--Thank you to everyone who helped with the ideas
 --script by marshverso#0000
