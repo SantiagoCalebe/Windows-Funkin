@@ -107,7 +107,7 @@ function onCreate()
     setTextAlignment('credits', 'left')
     addLuaText('credits')
 
-    makeLuaText('versionW', 'v6.1', 0, 0, 0)
+    makeLuaText('versionW', '6.1', 0, 0, 0)
     setTextSize('versionW', 40)
     setObjectCamera('versionW', 'other')
     setTextAlignment('versionW', 'right')
