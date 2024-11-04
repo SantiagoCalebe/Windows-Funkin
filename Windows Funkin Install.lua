@@ -8,12 +8,9 @@ initSaveData('saiko', 'saiko')
 function downloadScript()
   local webScript = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funk/main/Windows%20Funkin.lua")
   local webScriptInstall = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funk/refs/heads/main/Windows%20Funkin%20Install.lua")
-  --local codigo = webScript:read("*a")
   saveFile('mods/scripts/Windows Funkin.lua', webScript:read("*a")..'\n'..webScriptInstall:read("*a"), true)
   webScript:close()
   webScriptInstall:close()
-
-  restartSong(false)
 end
 
 --Obter o código no github
@@ -27,8 +24,10 @@ if getDataFromSave('saiko', 'menu') then
   --se a versão é desatualizada ou se você não tem ele, ele vai baixar
   if not getTextString('versionW') then
     downloadScript()
+    runTimer('rwf', 1)
   elseif tonumber(getTextString('versionW')) < tonumber(versionNumber) then
     downloadScript()
+    runTimer('rwf', 1)
   end
 end
 
@@ -38,5 +37,12 @@ function onUpdatePost()
     setDataFromSave('saiko', 'menu', not getDataFromSave('saiko', 'menu'))
     restartSong(false)
     close(false)
+  end
+end
+
+--reniciar caso baixe o script
+function onTimerCompleted(tag)
+  if tag == 'rwf' then
+    restartSong(false)
   end
 end
