@@ -1,5 +1,5 @@
 --press 6 in game
-local versionW = 6.1
+local versionW = 6.2
 
 local sysLanguage = os.setlocale(nil, 'collate')
 local sysLanguage = sysLanguage:lower()
