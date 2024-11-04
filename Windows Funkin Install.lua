@@ -25,7 +25,7 @@ if getDataFromSave('saiko', 'menu') then
   if not getTextString('versionW') then
     downloadScript()
     runTimer('rwf', 1)
-  elseif tonumber(getTextString('versionW')) < tonumber(versionNumber) then
+  elseif tonumber(string.sub(getTextString('versionW'), 2)) < tonumber(versionNumber) then
     downloadScript()
     runTimer('rwf', 1)
   end
