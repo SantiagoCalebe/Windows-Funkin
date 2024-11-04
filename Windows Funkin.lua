@@ -1,4 +1,4 @@
-local versionW = 7.1
+local versionW = 7.11
 
 local sysLanguage = os.setlocale(nil, 'collate')
 local sysLanguage = sysLanguage:lower()
@@ -201,12 +201,6 @@ function onCreatePost()
 
     setProperty('camHUD.visible', false)
 
-    if getRandomBool(50) then
-      objectPlayAnimation('boyfriend', 'hey', true)
-      objectPlayAnimation('gf', 'cheer', true)
-    end
-
-    triggerEvent('Camera Follow Pos', getGraphicMidpointX('boyfriend')*0.6, getGraphicMidpointY('boyfriend'))
     discord('WINDOWS FUNKIN', 'SELECT:'..getTextString(options.option[selection]))
   end
 end
