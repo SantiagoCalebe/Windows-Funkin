@@ -33,7 +33,7 @@ if getDataFromSave('saiko', 'menu') then
 end
 
 -- para entrar no modo Windows Funkin
-function onUpdatePost()
+function onUpdate()
   if (getDataFromSave('saiko', 'menu') and keyJustPressed('back') and not selectionStop) or getPropertyFromClass('flixel.FlxG', 'keys.justPressed.SIX') then
     setDataFromSave('saiko', 'menu', not getDataFromSave('saiko', 'menu'))
     restartSong(false)
