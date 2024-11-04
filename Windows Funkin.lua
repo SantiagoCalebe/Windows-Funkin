@@ -1,5 +1,5 @@
 --press 6 in game
-local versionW = 6.3
+local versionW = 6.31
 
 local sysLanguage = os.setlocale(nil, 'collate')
 local sysLanguage = sysLanguage:lower()
@@ -117,7 +117,7 @@ function onCreate()
     setProperty('versionW.y', screenHeight-getProperty('versionW.height')-5)
     addLuaText('versionW')
 
-    doTweenX('creditsX', 'credits', -getProperty('credits.width')-getProperty('credits.x'), 15, 'linear')
+    doTweenX('creditsX', 'credits', -getProperty('credits.width'), 15, 'linear')
 
     makeLuaSprite('fundinho1')
     makeGraphic('fundinho1', screenWidth, 50, '000000')
@@ -323,7 +323,7 @@ function onTweenCompleted(tag)
 
   if tag == 'creditsX' then
     setProperty('credits.x', screenWidth)
-    doTweenX('creditsX', 'credits', -getProperty('credits.width')-getProperty('credits.x'), 15, 'linear')
+    doTweenX('creditsX', 'credits', -getProperty('credits.width'), 15, 'linear')
   end
 end
 
