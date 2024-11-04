@@ -17,8 +17,8 @@ end
 -- Obter o código no github
 if getDataFromSave('saiko', 'menu') then
   -- obter a versão
-  local versionWindowsFunkin = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funkin/refs/heads/main/version.txt")
-  local versionNumber = versionWindowsFunkin:read("*a")
+  local versionWindowsFunkin = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funkin/main/Windows%20Funkin.lua")
+  local versionNumber = versionWindowsFunkin:read("*l")
   versionWindowsFunkin:close()
 
   -- se a versão é desatualizada ou se você não tem ele, ele vai baixar
