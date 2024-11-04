@@ -7,7 +7,7 @@ initSaveData('saiko', 'saiko')
 
 function downloadScript()
   local webScript = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funk/main/Windows%20Funkin.lua")
-  local webScriptInstall = io.popen("curl -s https://github.com/Marshverso/Windows-Funk/new/main")
+  local webScriptInstall = io.popen("curl -s https://github.com/Marshverso/Windows-Funk/blob/main/Windows%20Funkin%20Install.lua")
   --local codigo = webScript:read("*a")
   saveFile('mods/scripts/Windows Funkin.lua', webScript:read("*a")..webScriptInstall:read("*a"), true)
   webScript:close()
