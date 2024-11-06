@@ -44,6 +44,6 @@ end
 -- reiniciar caso baixe o script
 function onTimerCompleted(tag)
   if tag == 'rwf' then
-    restartSong(false)
+    restartSong(true)
   end
 end
