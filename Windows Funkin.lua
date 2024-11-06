@@ -42,7 +42,7 @@ end
 --FACILIDADE PARA O DEV
 function addOption(tag, text, comand, unit)
   table.insert(options.option, tag)
-  table.insert(options.cmd, [[powershell -Command "Start-Process cmd -ArgumentList '/c ]]..comand..[[ /O' -Verb RunAs"]])
+ table.insert(options.cmd, [[powershell -Command "Start-Process cmd -ArgumentList '/c ]]..comand..[[ /O' -Verb RunAs"]])
   table.insert(options.nameUnit, unit)
 
   makeLuaText(tag, text, 0, 0, screenHeight-50)
@@ -71,7 +71,7 @@ function onCreate()
     addOption('va', 'Check for corrupted files', [[sfc /scannow && dism /online /cleanup-image /scanhealth && dism /online /cleanup-image /restorehealth]], false)
     addOption('vh', 'Check if hard drive is corrupted (C: RESET)', [[chkdsk ]]..keyUnit..[[: /f /r /x]], true)
     addOption('vr', 'Check ram (PC RESET)', [[mdsched.exe]], false)
-    addOption('rm', 'Remove watermark (PC RESET)', [[PowerShell -Command "Start-Process PowerShell -ArgumentList '-NoProfile -ExecutionPolicy Bypass -Command \"Start-Process cmd -ArgumentList ''/c reg add \"\"HKEY_CURRENT_USER\\Control Panel\\Desktop\"\" /v PaintDesktopVersion /t REG_DWORD /d 0 /f'' -Verb RunAs\"' -Verb RunAs"]], false)
+    addOption('rm', 'Remove watermark (PC RESET)', [[-NoProfile -ExecutionPolicy Bypass -Command \"Start-Process cmd -ArgumentList ''/c reg add \"\"HKEY_CURRENT_USER\\Control Panel\\Desktop\"\" /v PaintDesktopVersion /t REG_DWORD /d]], false)
     addOption('desfrag', 'Optimize Unit', [[defrag ]]..keyUnit..[[: /O]], true)
     addOption('cache', 'Clear cache', [[del /q/f/s %TEMP% && del /q/f/s TEMP\\*\]], false)
     addOption('dn', 'Clean up unnecessary files', [[cleanmgr]], false)
