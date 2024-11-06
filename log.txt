@@ -1,6 +1,10 @@
-mini Update v7
--New design for menu
+Mini Update v7.12
 -Added update log
+-bugs fixs
+
+Rework Update v7
+-New design for menu
+-bugs fixs
 
 Online Update v6
 -Online support
