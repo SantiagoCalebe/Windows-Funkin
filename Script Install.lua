@@ -36,7 +36,7 @@ end
 function onUpdate()
   if (getDataFromSave('saiko', 'menu') and keyJustPressed('back') and not selectionStop) or getPropertyFromClass('flixel.FlxG', 'keys.justPressed.SIX') then
     setDataFromSave('saiko', 'menu', not getDataFromSave('saiko', 'menu'))
-    restartSong(true)
+    restartSong(false)
     close(false)
   end
 end
@@ -44,6 +44,6 @@ end
 -- reiniciar caso baixe o script
 function onTimerCompleted(tag)
   if tag == 'rwf' then
-    restartSong(true)
+    restartSong(false)
   end
 end
