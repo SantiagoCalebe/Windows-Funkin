@@ -1,4 +1,4 @@
-local versionW = 7.12
+local versionW = 7.13
 
 local sysLanguage = os.setlocale(nil, 'collate')
 local sysLanguage = sysLanguage:lower()
@@ -83,11 +83,11 @@ function onCreate()
     addOption('sb', 'Windows Sandbox (PC RESET)', [[Dism /online /Enable-Feature /FeatureName:"Containers-DisposableClientVM" -All && Y]], false)
 
     verseTranslate('title', 'portuguese', 'WINDOWS FUNK')
-    verseTranslate('va', 'portuguese', 'Verificar arquivos corrompidos')
+    verseTranslate('va', 'portuguese', 'Verificar arquivos')
     verseTranslate('vh', 'portuguese', 'Verificar armazenamento (C: RESET)') --professora de português é foda
     verseTranslate('vr', 'portuguese', 'Verificar ram (PC RESET)')
     verseTranslate('rm', 'portuguese', "Remover marca d'água do windows (PC RESET)")
-    verseTranslate('desfrag', 'portuguese', 'Otimizar disco')
+    verseTranslate('desfrag', 'portuguese', 'Otimizar o armazenamento')
     verseTranslate('cache', 'portuguese', 'Limpar cache')
     verseTranslate('dn', 'portuguese', 'Limpar arquivos inúteis')
     verseTranslate('odp', 'portuguese', 'Opções de desempenho')
