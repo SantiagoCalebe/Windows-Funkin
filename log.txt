@@ -1,13 +1,13 @@
-Mini Update v7.12
--Added update log
--bugs fixs
+                                                                          Mini Update v7.12
+                                                                      -Added update log
+                                                                      -bugs fixs
 
-Rework Update v7
--New design for menu
--bugs fixs
+                                                                          Rework Update v7
+                                                                      -New design for menu
+                                                                      -bugs fixs
 
-Online Update v6
--Online support
--Backup system
--Spanish translation by @scarletw 69 
--bugs fixs
+                                                                          Online Update v6
+                                                                      -Online support
+                                                                      -Backup system
+                                                                      -Spanish translation by @scarletw 69 
+                                                                      -bugs fixs
