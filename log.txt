@@ -1,0 +1,9 @@
+mini Update v7
+-New design for menu
+-Added update log
+
+Online Update v6
+-Online support
+-Backup system
+-Spanish translation by @scarletw 69 
+-bugs fixs
