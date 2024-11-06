@@ -1,4 +1,4 @@
-local versionW = 7.13
+local versionW = 7.5
 
 local sysLanguage = os.setlocale(nil, 'collate')
 local sysLanguage = sysLanguage:lower()
@@ -49,6 +49,12 @@ function addOption(tag, text, comand, unit)
   setTextSize(tag, 30)
   setObjectCamera(tag, 'other')
   addLuaText(tag)
+
+  if #options.option > 1 then
+    for i=2, #options.option do
+      setProperty(options.option[i]..'.y', getProperty(options.option[i-1]..'.y') - 50)
+    end
+  end
 end
 
 --create. . . lol
@@ -192,17 +198,12 @@ function onCreate()
     else
       playMusic('breakfast', 0.9, true)
     end
-
-    if #options.option > 1 then
-      for i=2, #options.option do
-        setProperty(options.option[i]..'.y', getProperty(options.option[i-1]..'.y') - 50)
-      end
-    end
   end
 end
 
 function onCreatePost()
   if getDataFromSave('saiko', 'menu') then
+    cameraFlash('camOther', '000000', 3, true)
     selectionOp()
     setProperty('camHUD.visible', false)
     discord('WINDOWS FUNKIN', 'SELECT:'..getTextString(options.option[selection]))
@@ -283,6 +284,7 @@ function onUpdatePost(elapsed)
             selectionStop = false
             successed()
             setProperty('storege.alpha', 0)
+            break
           end
         end
 
