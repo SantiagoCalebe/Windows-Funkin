@@ -1,4 +1,4 @@
-local versionW = 7.51
+local versionW = 7.52
 
 local sysLanguage = os.setlocale(nil, 'collate')
 local sysLanguage = sysLanguage:lower()
@@ -66,7 +66,9 @@ function onCreate()
   setPropertyFromClass('flixel.FlxG', 'updateFramerate', 480)]]
 
   if getDataFromSave('saiko', 'menu') then
-    cameraFade('camGame', '000000', 0.01, true)
+    setProperty('camGame.visible', false)
+    setProperty('camHUD.visible', false)
+    setProperty('camOther.alpha', 0)
 
     makeLuaText('title', 'WINDOWS FUNKIN', screenWidth, 10, 68)
     setTextSize('title', 100)
@@ -203,9 +205,8 @@ end
 
 function onCreatePost()
   if getDataFromSave('saiko', 'menu') then
-    cameraFlash('camOther', '000000', 3, true)
+    doTweenAlpha('camOtherAl', 'camOther', 1, 5, 'sineInOut')
     selectionOp()
-    setProperty('camHUD.visible', false)
     discord('WINDOWS FUNKIN', 'SELECT:'..getTextString(options.option[selection]))
   end
 end
