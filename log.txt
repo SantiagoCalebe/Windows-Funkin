@@ -1,4 +1,4 @@
-                                                                              Mini Update v7.5
+                                                                              Mini Update v7.51
                                                                       -Added update log
                                                                       -A small change in the menu
                                                                       -Changes in the Portuguese Translation
