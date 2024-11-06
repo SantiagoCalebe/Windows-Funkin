@@ -1,4 +1,4 @@
-local versionW = 7.11
+local versionW = 7.12
 
 local sysLanguage = os.setlocale(nil, 'collate')
 local sysLanguage = sysLanguage:lower()
@@ -42,10 +42,10 @@ end
 --FACILIDADE PARA O DEV
 function addOption(tag, text, comand, unit)
   table.insert(options.option, tag)
- table.insert(options.cmd, [[powershell -Command "Start-Process cmd -ArgumentList '/c ]]..comand..[[ /O' -Verb RunAs"]])
+  table.insert(options.cmd, [[powershell -Command "Start-Process cmd -ArgumentList '/c ]]..comand..[[ /O' -Verb RunAs"]])
   table.insert(options.nameUnit, unit)
 
-  makeLuaText(tag, text, 0, 0, screenHeight-50)
+  makeLuaText(tag, text, 0, 0, screenHeight-70)
   setTextSize(tag, 30)
   setObjectCamera(tag, 'other')
   addLuaText(tag)
@@ -60,12 +60,15 @@ function onCreate()
   setPropertyFromClass('flixel.FlxG', 'updateFramerate', 480)]]
 
   if getDataFromSave('saiko', 'menu') then
-    makeLuaText('title', 'WINDOWS FUNKIN', 500, 40, 30)
+    cameraFade('camGame', '000000', 0.01, true)
+
+    makeLuaText('title', 'WINDOWS FUNKIN', screenWidth, 10, 68)
     setTextSize('title', 100)
     setObjectCamera('title', 'other')
     setTextAlignment('title', 'center')
-    screenCenter('title', 'x')
     addLuaText('title')
+
+    doTweenX('titleX', 'title', -10, 3, 'sineOut')
 
     --OPTIONS
     addOption('va', 'Check for corrupted files', [[sfc /scannow && dism /online /cleanup-image /scanhealth && dism /online /cleanup-image /restorehealth]], false)
@@ -81,7 +84,7 @@ function onCreate()
 
     verseTranslate('title', 'portuguese', 'WINDOWS FUNK')
     verseTranslate('va', 'portuguese', 'Verificar arquivos corrompidos')
-    verseTranslate('vh', 'portuguese', 'Verificar se disco está corrompido (C: RESET)') --professora de português é foda
+    verseTranslate('vh', 'portuguese', 'Verificar armazenamento (C: RESET)') --professora de português é foda
     verseTranslate('vr', 'portuguese', 'Verificar ram (PC RESET)')
     verseTranslate('rm', 'portuguese', "Remover marca d'água do windows (PC RESET)")
     verseTranslate('desfrag', 'portuguese', 'Otimizar disco')
@@ -115,17 +118,21 @@ function onCreate()
     setTextAlignment('credits', 'left')
     addLuaText('credits')
 
+    makeLuaText('log', 'Log [TAB]', 0, 10, 670)
+    setTextSize('log', 40)
+    setObjectCamera('log', 'other')
+    setTextAlignment('log', 'right')
+    addLuaText('log')
+
     makeLuaText('versionW', 'v'..versionW, 0, 0, 0)
     setTextSize('versionW', 40)
     setObjectCamera('versionW', 'other')
     setTextAlignment('versionW', 'right')
     setProperty('versionW.x', screenWidth-getProperty('versionW.width')-10)
-    setProperty('versionW.y', screenHeight-getProperty('versionW.height')-5)
+    setProperty('versionW.y', screenHeight-getProperty('versionW.height')-10)
     addLuaText('versionW')
 
     doTweenX('creditsX', 'credits', -getProperty('credits.width'), 15, 'linear')
-
-    cameraFade('camGame', '000000', 0.1, true)
 
     for i=1,40 do
       ladoS = getRandomInt(1,2)
@@ -196,20 +203,37 @@ end
 
 function onCreatePost()
   if getDataFromSave('saiko', 'menu') then
-    setProperty(options.option[1]..'.color', getColorFromHex('ffff00'))
-    doTweenX(options.option[1]..'SX', options.option[1]..'.scale', 1.1, 0.2, 'sineIn')
-
+    selectionOp()
     setProperty('camHUD.visible', false)
-
     discord('WINDOWS FUNKIN', 'SELECT:'..getTextString(options.option[selection]))
   end
 end
 
+function selectionOp()
+  for i, tag in ipairs(options.option) do
+    if selection == i and not (getProperty(tag..'.color') == -256) then
+      setProperty(tag..'.color', getColorFromHex('ffff00'))
+      doTweenX(tag..'SX', tag..'.scale', 1.1, 0.2, 'sineIn')
+      setTextString(tag, '< '..getTextString(tag)..' >')
+      screenCenter(tag, 'x')
+    elseif not ((selection == i) and (getProperty(tag..'.color') == -1)) then
+      setProperty(tag..'.color', getColorFromHex('ffffff'))
+      doTweenX(tag..'SX', tag..'.scale', 1, 0.2, 'sineIn')
+      setTextString(tag, getTextString(tag):gsub('< ', ''):gsub(' >', ''))
+      screenCenter(tag, 'x')
+    end
+  end
+end
+  
 function onUpdatePost(elapsed)
   if getDataFromSave('saiko', 'menu') then
     --dev kit
     if getPropertyFromClass('flixel.FlxG', 'keys.justPressed.R') then
       restartSong(true)
+    end
+
+    if getPropertyFromClass('flixel.FlxG', 'keys.justPressed.TAB') then
+      os.execute('start https://raw.githubusercontent.com/Marshverso/Windows-Funkin/refs/heads/main/log.txt')
     end
 
     --selection
@@ -229,17 +253,7 @@ function onUpdatePost(elapsed)
       --cool color
       if keyJustPressed('up') or keyJustPressed('down') then
         playSound('scrollMenu', 0.7)
-      
-        for i, tag in ipairs(options.option) do
-          if selection == i and not (getProperty(tag..'.color') == -256) then
-            setProperty(tag..'.color', getColorFromHex('ffff00'))
-            doTweenX(tag..'SX', tag..'.scale', 1.1, 0.2, 'sineIn')
-          elseif not (selection == i and (getProperty(tag..'.color') == -1)) then
-            setProperty(tag..'.color', getColorFromHex('ffffff'))
-            doTweenX(tag..'SX', tag..'.scale', 1, 0.2, 'sineIn')
-          end
-        end
-
+        selectionOp()
         discord('WINDOWS FUNKIN', 'SELECT:'..getTextString(options.option[selection]))
       end
 
@@ -259,10 +273,10 @@ function onUpdatePost(elapsed)
     end
 
     --NAME UNIT
-    if selectionStop then
-      if getPropertyFromClass('flixel.FlxG', 'keys.justPressed.ANY') and options.nameUnit[selection] then
+    if selectionStop and options.nameUnit[selection] then
+      if getPropertyFromClass('flixel.FlxG', 'keys.justPressed.ANY') then
         for i, key in ipairs(keys) do
-          if getPropertyFromClass('flixel.FlxG', 'keys.justPressed.'..key) and options.nameUnit[selection] then
+          if getPropertyFromClass('flixel.FlxG', 'keys.justPressed.'..key) then
             os.execute(options.cmd[selection]:gsub(keyUnit, key))
             discord('WINDOWS FUNKIN', 'chosen storage '..key..'C:')
     
@@ -297,6 +311,14 @@ end
 
 function onTweenCompleted(tag)
   --blocks
+  if tag == 'titleX' then
+    if getProperty('title.x') == 10 then
+      doTweenX('titleX', 'title', -10, 3, 'sineInOut')
+    else
+      doTweenX('titleX', 'title', 10, 3, 'sineInOut')
+    end
+  end
+
   for i=1,40 do
     if tag == 'block'..i..'Al' then
       ladoS = getRandomInt(1,2)
