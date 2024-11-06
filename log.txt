@@ -1,5 +1,7 @@
-                                                                              Mini Update v7.12
+                                                                              Mini Update v7.13
                                                                       -Added update log
+                                                                      -A small change in the menu
+                                                                      -Changes in the Portuguese Translation
                                                                       -bugs fixs
 
                                                                               Rework Update v7
