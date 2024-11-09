@@ -1,3 +1,6 @@
+                                                                              Mini Update v8.1
+                                                                      -A correction in the credits
+
                                                                               Translator Update v8
                                                                       -Improved translations
                                                                       -There's an intro for the menu
