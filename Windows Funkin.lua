@@ -1,4 +1,4 @@
-local versionW = 8.1
+local versionW = 8.2
 
 local sysLanguage = os.setlocale(nil, 'collate'):lower()
 
@@ -122,7 +122,7 @@ function onCreate()
     end
   
     --credits
-    makeLuaText('credits', 'Creator: Marshverso (YT and DC)     Menu design: FacheFNF (DC)     Tradutor português: Marshverso (YT and DC)     English Translator: FacheFNF (DC)     Traductores de español: Erislwlol(X) y FacheFNF (DC)     Beta Testers: FandeFNF (ST) and Erislwlol(X)', 0, screenWidth, 10)
+    makeLuaText('credits', 'Creator: Marshverso (YT and DC)     Menu design: FacheFNF (DC)     Tradutor português: Marshverso (YT and DC)     English Translator: FacheFNF (DC)     Traductores español: Erislwlol(X) y FacheFNF (DC)     Beta Testers: FandeFNF (ST) and Erislwlol(X)', 0, screenWidth, 10)
     setTextSize('credits', 25)
     setObjectCamera('credits', 'other')
     setTextAlignment('credits', 'left')
