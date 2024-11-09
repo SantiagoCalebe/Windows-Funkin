@@ -12,7 +12,7 @@ initSaveData('saiko', 'saiko')
 function downloadScript()
   local webScript = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funkin/main/Windows%20Funkin.lua")
   local webScriptInstall = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funkin/refs/heads/main/Script%20Install.lua")
-  saveFile(scriptName, webScript:read("*a")..webScriptInstall:read("*a"), true)
+  saveFile(scriptName, webScript:read("*a")..'\n'..webScriptInstall:read("*a"), true)
   webScript:close()
   webScriptInstall:close()
 end
