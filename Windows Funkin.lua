@@ -1,7 +1,6 @@
-local versionW = 7.52
+local versionW = 8
 
-local sysLanguage = os.setlocale(nil, 'collate')
-local sysLanguage = sysLanguage:lower()
+local sysLanguage = os.setlocale(nil, 'collate'):lower()
 
 local keys = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}
 
@@ -79,39 +78,42 @@ function onCreate()
     doTweenX('titleX', 'title', -10, 3, 'sineOut')
 
     --OPTIONS
-    addOption('va', 'Check for corrupted files', [[sfc /scannow && dism /online /cleanup-image /scanhealth && dism /online /cleanup-image /restorehealth]], false)
-    addOption('vh', 'Check if hard drive is corrupted (C: RESET)', [[chkdsk ]]..keyUnit..[[: /f /r /x]], true)
+    --translator by FacheFNF
+    addOption('va', 'Check files', [[sfc /scannow && dism /online /cleanup-image /scanhealth && dism /online /cleanup-image /restorehealth]], false)
+    addOption('vh', 'Check storege', [[chkdsk ]]..keyUnit..[[: /f /r /x]], true)
     addOption('vr', 'Check ram (PC RESET)', [[mdsched.exe]], false)
     addOption('rm', 'Remove watermark (PC RESET)', [[-NoProfile -ExecutionPolicy Bypass -Command \"Start-Process cmd -ArgumentList ''/c reg add \"\"HKEY_CURRENT_USER\\Control Panel\\Desktop\"\" /v PaintDesktopVersion /t REG_DWORD /d]], false)
-    addOption('desfrag', 'Optimize Unit', [[defrag ]]..keyUnit..[[: /O]], true)
+    addOption('desfrag', 'Optimize storege', [[defrag ]]..keyUnit..[[: /O]], true)
     addOption('cache', 'Clear cache', [[del /q/f/s %TEMP% && del /q/f/s TEMP\\*\]], false)
-    addOption('dn', 'Clean up unnecessary files', [[cleanmgr]], false)
+    addOption('dn', 'Clear junk files', [[cleanmgr]], false)
     addOption('odp', 'Performance Options', [[SystemPropertiesPerformance]], false)
     addOption('av', 'Anti-virus', [[mrt]], false)
-    addOption('sb', 'Windows Sandbox (PC RESET)', [[Dism /online /Enable-Feature /FeatureName:"Containers-DisposableClientVM" -All && Y]], false)
+    addOption('sb', 'Windows Emulator (PC RESET)', [[Dism /online /Enable-Feature /FeatureName:"Containers-DisposableClientVM" -All && Y]], false)
 
+    --translator by Marshverso
     verseTranslate('title', 'portuguese', 'WINDOWS FUNK')
     verseTranslate('va', 'portuguese', 'Verificar arquivos')
-    verseTranslate('vh', 'portuguese', 'Verificar armazenamento (C: RESET)') --professora de português é foda
-    verseTranslate('vr', 'portuguese', 'Verificar ram (PC RESET)')
-    verseTranslate('rm', 'portuguese', "Remover marca d'água do windows (PC RESET)")
-    verseTranslate('desfrag', 'portuguese', 'Otimizar o armazenamento')
+    verseTranslate('vh', 'portuguese', 'Verificar armazenamento') --professora de português é foda
+    verseTranslate('vr', 'portuguese', 'Verificar ram (REINICIAR PC)')
+    verseTranslate('rm', 'portuguese', "Remover marca d'água do windows (REINICIAR PC)")
+    verseTranslate('desfrag', 'portuguese', 'Otimizar armazenamento')
     verseTranslate('cache', 'portuguese', 'Limpar cache')
     verseTranslate('dn', 'portuguese', 'Limpar arquivos inúteis')
     verseTranslate('odp', 'portuguese', 'Opções de desempenho')
-    verseTranslate('sb', 'portuguese', 'Emulador do windows (PC RESET)')
+    verseTranslate('sb', 'portuguese', 'Emulador do windows (REINICIAR PC)')
 
+    --translator by Erislwlol and FacheFNF
     verseTranslate('title', 'spanish', 'WINDOWS FUNK')
-    verseTranslate('va', 'spanish', 'Buscar archivos dañados ')
-    verseTranslate('vh', 'spanish', 'Comprueba si el disco está dañado (C: REINICIA)') --professora de espanhol é foda
+    verseTranslate('va', 'spanish', 'Buscar archivos dañados')
+    verseTranslate('vh', 'spanish', 'Comproba si el disco está dañado') --professora de espanhol é foda
     verseTranslate('vr', 'spanish', 'Comprobar ram (PC RESET)')
     verseTranslate('rm', 'spanish', "Eliminar marca de agua de Windows (REINICIA EL PC)")
-    verseTranslate('desfrag', 'spanish', 'Optimice tu disco')
+    verseTranslate('desfrag', 'spanish', 'Optimice su disco')
     verseTranslate('cache', 'spanish', 'Borrar la caché')
     verseTranslate('dn', 'spanish', 'Eliminar archivos inútiles')
     verseTranslate('odp', 'spanish', 'Opciones de rendimiento')
-    verseTranslate('sb', 'spanish', 'Emulador de lo windows (REINICIA EL PC)')
-    -- Lo siento por cualquier cosa mal, lo hice para practicar mi español un poco :sob:
+    verseTranslate('sb', 'spanish', 'Emulador de windows (REINICIA EL PC)')
+    --Lo siento por cualquier cosa mal, lo hice para practicar mi español un poco
 
     --conserta alinhamento
     for i, tag in ipairs(options.option) do
@@ -120,7 +122,7 @@ function onCreate()
     end
   
     --credits
-    makeLuaText('credits', 'Creator: Marshverso (YT and DC)     Menu design: FacheFNF (DC)     Spanish Translator: Erislwlol(X)     Beta Testers: FandeFNF (ST) and Erislwlol(X)', 0, screenWidth, 10)
+    makeLuaText('credits', 'Creator: Marshverso (YT and DC)     Menu design: FacheFNF (DC)     Tradutor português: Marshverso (YT and DC)     English Translator: FacheFNF (DC)     Traductores de español: Erislwlol(X) and FacheFNF (DC)     Beta Testers: FandeFNF (ST) and Erislwlol(X)', 0, screenWidth, 10)
     setTextSize('credits', 25)
     setObjectCamera('credits', 'other')
     setTextAlignment('credits', 'left')
