@@ -1,3 +1,9 @@
+                                                                              Translator Update v8
+                                                                      -Improved translations
+                                                                      -There's an intro for the menu
+                                                                      -Coming soon menu music for Windows Funkin
+                                                                      -bugs fixs
+
                                                                               Mini Update v7.51
                                                                       -Added update log
                                                                       -A small change in the menu
