@@ -4,6 +4,21 @@ end
 
 function onCreate()
   initSaveData('saiko', 'saiko')
+
+  -- Obter o código no github
+  if getDataFromSave('saiko', 'menu') then
+    -- obter a versão
+    local versionWindowsFunkin = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funkin/main/Windows%20Funkin.lua")
+    local versionNumber = versionWindowsFunkin:read("*l")
+    local versionNumber = versionNumber:match("(%d+%.%d+)")
+    versionWindowsFunkin:close()
+
+    -- se a versão é desatualizada ou se você não tem ele, ele vai baixar
+    if tonumber(versionW) < tonumber(versionNumber) then
+      downloadScript()
+      runTimer('rwf', 0.1)
+    end
+  end
 end
 
 -- baixar script
@@ -13,21 +28,6 @@ function downloadScript()
   saveFile(scriptName, webScript:read("*a")..'\n'..webScriptInstall:read("*a"), true)
   webScript:close()
   webScriptInstall:close()
-end
-
--- Obter o código no github
-if getDataFromSave('saiko', 'menu') then
-  -- obter a versão
-  local versionWindowsFunkin = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funkin/main/Windows%20Funkin.lua")
-  local versionNumber = versionWindowsFunkin:read("*l")
-  local versionNumber = versionNumber:match("(%d+%.%d+)")
-  versionWindowsFunkin:close()
-
-  -- se a versão é desatualizada ou se você não tem ele, ele vai baixar
-  if tonumber(versionW) < tonumber(versionNumber) then
-    downloadScript()
-    runTimer('rwf', 0.1)
-  end
 end
 
 -- para entrar no modo Windows Funkin
