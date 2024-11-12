@@ -4,10 +4,6 @@ if versionW == nil then
   versionW = 0
 end
 
-function save()
-  initSaveData('saiko', 'saiko')
-end
-
 -- baixar script
 function downloadScript()
   local webScript = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funkin/main/Windows%20Funkin.lua")
@@ -35,7 +31,7 @@ end
 -- para entrar no modo Windows Funkin
 function onUpdate()
   if not save then
-    save()
+    initSaveData('saiko', 'saiko')
     save = true
   end
 
