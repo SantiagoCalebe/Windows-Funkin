@@ -2,10 +2,6 @@ if versionW == nil then
   versionW = 0
 end
 
-if not (buildTarget == 'windows') then
-  removeLuaScript(scriptName, true)
-end
-
 initSaveData('saiko', 'saiko')
 
 -- baixar script
