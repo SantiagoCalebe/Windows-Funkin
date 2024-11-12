@@ -1,7 +1,9 @@
-local save = false
-
 if versionW == nil then
   versionW = 0
+end
+
+function onCreate()
+  initSaveData('saiko', 'saiko')
 end
 
 -- baixar script
@@ -30,11 +32,6 @@ end
 
 -- para entrar no modo Windows Funkin
 function onUpdate()
-  if not save then
-    initSaveData('saiko', 'saiko')
-    save = true
-  end
-
   if (getDataFromSave('saiko', 'menu') and keyJustPressed('back') and not selectionStop) or getPropertyFromClass('flixel.FlxG', 'keys.justPressed.SIX') then
     setDataFromSave('saiko', 'menu', not getDataFromSave('saiko', 'menu'))
     restartSong(false)
