@@ -3,7 +3,7 @@ if versionW == nil then
 end
 
 if not (buildTarget == 'windows') then
-  close(false)
+  removeLuaScript(scriptName, true)
 end
 
 initSaveData('saiko', 'saiko')
