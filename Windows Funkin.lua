@@ -7,7 +7,7 @@ local keys = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', '
 local selection = 1
 local selectionStop = false
 
-local ladoS = getRandomInt(1,2)
+local ladoS = 1
 local spawnar = {-140, 1420}
 local colors = {'00ff99', '6666ff', 'ff3399'}
 
