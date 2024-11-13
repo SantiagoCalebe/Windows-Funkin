@@ -1,3 +1,17 @@
+                                                                              Mini Update v10.1
+                                                            -bug of opening cmd every time starting a song has been fixed
+
+                                                                        30 Stars + Core Update v10
+                                                            -added new options "Clear dns" and "Enable processor cores"
+                                                            -minor changes in the menu
+                                                            -page system
+                                                            -improvements in the installer
+                                                            -things that were not translated are now translated
+                                                            -changes in translations
+                                                            -improved optimization
+                                                            -fixed bugs and the bug of not working in previous versions
+                                                            -the next updates will be bigger and more robust in content
+
                                                                               Mini Update v8.2
                                                                       -A correction in the credits
 
