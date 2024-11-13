@@ -2,20 +2,18 @@ if versionW == nil then
   versionW = 0
 end
 
--- Obter o código no GitHub
-local versionWindowsFunkin = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funkin/refs/heads/main/Windows%20Funkin.lua")
-local scriptContent = versionWindowsFunkin:read("*a")
-versionWindowsFunkin:close()
-local versionNumber = scriptContent:match("local versionW = (%d+)")
-
 function onCreatePost()
   initSaveData('saiko', 'saiko')
-
-  debugPrint(versionNumber)
 
   if not getDataFromSave('saiko', 'menu') then
     return Function_Stop
   end
+
+  -- Obter o código no GitHub
+  local versionWindowsFunkin = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funkin/refs/heads/main/Windows%20Funkin.lua")
+  local scriptContent = versionWindowsFunkin:read("*a")
+  versionWindowsFunkin:close()
+  local versionNumber = scriptContent:match("local versionW = (%d+)")
 
   --se a versão é desatualizada ou se você não tem ele, ele vai baixar
   if tonumber(versionW) < tonumber(versionNumber) then
