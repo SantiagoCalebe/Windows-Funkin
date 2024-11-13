@@ -36,6 +36,8 @@ function onCreatePost()
   verseTranslate('an', 'portuguese', 'Ativar núcleos')
 
   verseTranslate('storage', 'portuguese', 'DIGITE A LETRA DO SEU ARMAZENAMENTO')
+  verseTranslate('storage', 'portuguese', 'SUCESSO')
+  verseTranslate('storage', 'portuguese', 'Atualizações [TAB]')
 
   --translator by Erislwlol and FacheFNF
   verseTranslate('title', 'spanish', 'WINDOWS FUNK')
@@ -52,6 +54,8 @@ function onCreatePost()
   verseTranslate('an', 'spanish', 'Habilitar núcleos')
 
   verseTranslate('storage', 'spanish', 'INGRESA LA LETRA DE TU ALMACENAMIENTO')
+  verseTranslate('storage', 'spanish', 'ÉXITO')
+  verseTranslate('storage', 'spanish', 'actualizaciones [TAB]')
   --Lo siento por cualquier cosa mal, lo hice para practicar mi español un poco
 
   doTweenAlpha('camOtherAl', 'camOther', 1, 5, 'sineInOut')
