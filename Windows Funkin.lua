@@ -1,4 +1,4 @@
-local versionW = 8.3
+local versionW = 10
 
 local sysLanguage = os.setlocale(nil, 'collate'):lower()
 
@@ -13,8 +13,7 @@ local colors = {'00ff99', '6666ff', 'ff3399'}
 
 local options = {
   option = {},
-  cmd = {},
-  nameUnit = {}
+  cmd = {}
 }
 
 local keyUnit = 'NAMEUNIT'
@@ -39,21 +38,26 @@ function discord(details, state)
 end
 
 --FACILIDADE PARA O DEV
-function addOption(tag, text, comand, unit)
+function addOption(tag, text, comand)
   table.insert(options.option, tag)
-  table.insert(options.cmd, [[powershell -Command "Start-Process cmd -ArgumentList '/c ]]..comand..[[ /O' -Verb RunAs"]])
-  table.insert(options.nameUnit, unit)
+  table.insert(options.cmd, comand)
 
-  makeLuaText(tag, text, 0, 0, screenHeight-70)
+  makeLuaText(tag, text, screenWidth, 0, screenHeight-73)
   setTextSize(tag, 30)
   setObjectCamera(tag, 'other')
   addLuaText(tag)
 
-  if #options.option > 1 then
+  if not (#options.option == 11) then
     for i=2, #options.option do
-      setProperty(options.option[i]..'.y', getProperty(options.option[i-1]..'.y') - 50)
+      setProperty(tag..'.y', getProperty(options.option[i-1]..'.y') - 50)
     end
   end
+end
+
+--FOI SUCESSO ?
+function cmd(cmd)
+  io.popen([[powershell -Command "Start-Process cmd -ArgumentList '/c ]]..cmd..[[' -Verb RunAs"]])
+  successed()
 end
 
 --create. . . lol
@@ -64,7 +68,10 @@ function onCreate()
   --[[setPropertyFromClass('flixel.FlxG', 'drawFramerate', 480)
   setPropertyFromClass('flixel.FlxG', 'updateFramerate', 480)]]
 
-  if getDataFromSave('saiko', 'menu') then
+  if not getDataFromSave('saiko', 'menu') then
+    return Function_Stop
+  end
+
     setProperty('camGame.visible', false)
     setProperty('camHUD.visible', false)
     setProperty('camOther.alpha', 0)
@@ -79,56 +86,47 @@ function onCreate()
 
     --OPTIONS
     --translator by FacheFNF
-    addOption('va', 'Check files', [[sfc /scannow && dism /online /cleanup-image /scanhealth && dism /online /cleanup-image /restorehealth]], false)
-    addOption('vh', 'Check storege', [[chkdsk ]]..keyUnit..[[: /f /r /x]], true)
-    addOption('vr', 'Check ram (PC RESET)', [[mdsched.exe]], false)
-    addOption('rm', 'Remove watermark (PC RESET)', [[-NoProfile -ExecutionPolicy Bypass -Command \"Start-Process cmd -ArgumentList ''/c reg add \"\"HKEY_CURRENT_USER\\Control Panel\\Desktop\"\" /v PaintDesktopVersion /t REG_DWORD /d]], false)
-    addOption('desfrag', 'Optimize storege', [[defrag ]]..keyUnit..[[: /O]], true)
-    addOption('cache', 'Clear cache', [[del /q/f/s %TEMP% && del /q/f/s TEMP\\*\]], false)
-    addOption('dn', 'Clear junk files', [[cleanmgr]], false)
-    addOption('odp', 'Performance Options', [[SystemPropertiesPerformance]], false)
-    addOption('av', 'Anti-virus', [[mrt]], false)
-    addOption('sb', 'Windows Emulator (PC RESET)', [[Dism /online /Enable-Feature /FeatureName:"Containers-DisposableClientVM" -All && Y]], false)
-
-    --translator by Marshverso
-    verseTranslate('title', 'portuguese', 'WINDOWS FUNK')
-    verseTranslate('va', 'portuguese', 'Verificar arquivos')
-    verseTranslate('vh', 'portuguese', 'Verificar armazenamento') --professora de português é foda
-    verseTranslate('vr', 'portuguese', 'Verificar ram (REINICIAR PC)')
-    verseTranslate('rm', 'portuguese', "Remover marca d'água do windows (REINICIAR PC)")
-    verseTranslate('desfrag', 'portuguese', 'Otimizar armazenamento')
-    verseTranslate('cache', 'portuguese', 'Limpar cache')
-    verseTranslate('dn', 'portuguese', 'Limpar arquivos inúteis')
-    verseTranslate('odp', 'portuguese', 'Opções de desempenho')
-    verseTranslate('sb', 'portuguese', 'Emulador do windows (REINICIAR PC)')
-
-    --translator by Erislwlol and FacheFNF
-    verseTranslate('title', 'spanish', 'WINDOWS FUNK')
-    verseTranslate('va', 'spanish', 'Buscar archivos dañados')
-    verseTranslate('vh', 'spanish', 'Comproba si el disco está dañado') --professora de espanhol é foda
-    verseTranslate('vr', 'spanish', 'Comprobar ram (PC RESET)')
-    verseTranslate('rm', 'spanish', "Eliminar marca de agua de Windows (REINICIA EL PC)")
-    verseTranslate('desfrag', 'spanish', 'Optimice su disco')
-    verseTranslate('cache', 'spanish', 'Borrar la caché')
-    verseTranslate('dn', 'spanish', 'Eliminar archivos inútiles')
-    verseTranslate('odp', 'spanish', 'Opciones de rendimiento')
-    verseTranslate('sb', 'spanish', 'Emulador de windows (REINICIA EL PC)')
-    --Lo siento por cualquier cosa mal, lo hice para practicar mi español un poco
-
-    --conserta alinhamento
-    for i, tag in ipairs(options.option) do
-      setTextAlignment(tag, 'center')
-      screenCenter(tag, 'x')
-    end
+    addOption('va', 'Check files', [[sfc /scannow && dism /online /cleanup-image /scanhealth && dism /online /cleanup-image /restorehealth]])
+    addOption('vh', 'Check storage', [[chkdsk ]]..keyUnit..[[: /f /r /x]])
+    addOption('vr', 'Check ram (PC RESET)', [[mdsched.exe]])
+    addOption('rm', 'Remove watermark (PC RESET)', [[-NoProfile -ExecutionPolicy Bypass -Command \"Start-Process cmd -ArgumentList ''/c reg add \"\"HKEY_CURRENT_USER\\Control Panel\\Desktop\"\" /v PaintDesktopVersion /t REG_DWORD /d]])
+    addOption('desfrag', 'Optimize storage', [[defrag ]]..keyUnit..[[: /O]])
+    addOption('cache', 'Clear cache', [[del /q/f/s %TEMP% && del /q/f/s TEMP\\*\]])
+    addOption('dn', 'Clear junk files', [[cleanmgr]])
+    addOption('odp', 'Performance options', [[SystemPropertiesPerformance]])
+    addOption('av', 'Anti-virus', [[mrt]])
+    addOption('ld', 'Clear dns', [[ipconfig /flushdns]])
+    addOption('sb', 'Windows emulator (PC RESET)', [[Dism /online /Enable-Feature /FeatureName:"Containers-DisposableClientVM" -All && Y]])
+    addOption('an', 'Activates processor cores', [[pica]]--[[bcdedit /set {current} numproc '..tonumber(cmd('wmic cpu get NumberOfCores /value'):match("%d+"))]])
   
+    --pag
+    for i=1,2 do
+      makeLuaText('pag'..i, '>', 0, 0, 0)
+      setTextSize('pag'..i, 60)
+      setObjectCamera('pag'..i, 'other')
+
+      if i == 1 then
+        setProperty('pag1.angle', -90)
+        screenCenter('pag1', 'x')
+        setProperty('pag1.y', screenHeight-570)
+      else
+        setProperty('pag2.angle', 90)
+        screenCenter('pag2', 'x')
+        setProperty('pag2.y', 670)
+      end
+
+      addLuaText('pag'..i)
+      setTextAlignment('pag'..i, 'center')
+    end
+
     --credits
-    makeLuaText('credits', 'Creator: Marshverso (YT and DC)     Menu design: FacheFNF (DC)     Tradutor português: Marshverso (YT and DC)     English Translator: FacheFNF (DC)     Traductores español: Erislwlol(X) y FacheFNF (DC)     Beta Testers: FandeFNF (ST) and Erislwlol(X)', 0, screenWidth, 10)
+    makeLuaText('credits', 'Creator: Marshverso (YT and DC)     Menu design: FacheFNF (DC) and Marshverso (YT and DC)     Tradutor português: Marshverso (YT and DC)     English Translators: FacheFNF (DC) and Marshverso (YT and DC)     Traductores español: Erislwlol(X) y FacheFNF (DC)     Beta Testers: FandeFNF (ST) and Erislwlol(X)', 0, screenWidth, 10)
     setTextSize('credits', 25)
     setObjectCamera('credits', 'other')
     setTextAlignment('credits', 'left')
     addLuaText('credits')
 
-    makeLuaText('log', 'Log [TAB]', 0, 10, 670)
+    makeLuaText('log', 'Updates [TAB]', 0, 10, 670)
     setTextSize('log', 40)
     setObjectCamera('log', 'other')
     setTextAlignment('log', 'right')
@@ -143,6 +141,11 @@ function onCreate()
     addLuaText('versionW')
 
     doTweenX('creditsX', 'credits', -getProperty('credits.width'), 15, 'linear')
+
+    makeLuaSprite('bg', '')
+    makeGraphic('bg', screenWidth, screenHeight, '060b13')
+    setObjectCamera('bg', 'camOther')
+    addLuaSprite('bg', false)
 
     for i=1,40 do
       ladoS = getRandomInt(1,2)
@@ -169,47 +172,44 @@ function onCreate()
       doTweenAlpha('block'..i..'Al', 'block'..i, 0, getRandomFloat(2,5), 'backin')
     end
 
-    makeLuaSprite('sBg')
-    makeGraphic('sBg', screenWidth, screenHeight, '000000')
-    setObjectCamera('sBg', 'other')
-    setProperty('sBg.alpha', 0)
-    addLuaSprite('sBg', true)
+  makeLuaSprite('sBg')
+  makeGraphic('sBg', screenWidth, screenHeight, '000000')
+  setObjectCamera('sBg', 'other')
+  setProperty('sBg.alpha', 0)
+  addLuaSprite('sBg', true)
 
-    makeLuaText('storege', 'ENTER THE LETTER OF THE STORAGE DRIVE', 0, 0, 0)
-    setTextSize('storege', 50)
-    setObjectCamera('storege', 'other')
-    screenCenter('storege', 'xy')
-    setProperty('storege.alpha', 0)
-    addLuaText('storege')
+  makeLuaText('storage', 'ENTER THE LETTER OF THE STORAGE DRIVE', screenWidth, 0, 0)
+  setTextSize('storage', 50)
+  setObjectCamera('storage', 'other')
+  screenCenter('storage', 'y')
+  setProperty('storage.alpha', 0)
+  addLuaText('storage')
 
-    makeLuaText('s', 'SUCCESSED', 0, 0, 0)
-    setTextSize('s', 80)
-    setObjectCamera('s', 'other')
-    screenCenter('s', 'x')
-    setProperty('s.alpha', 0)
-    addLuaText('s')
+  makeLuaText('s', 'SUCCESSED', 0, 0, 0)
+  setTextSize('s', 80)
+  setObjectCamera('s', 'other')
+  screenCenter('s', 'x')
+  setProperty('s.alpha', 0)
+  addLuaText('s')
 
-    makeAnimatedLuaSprite('sGf', 'characters/GF_assets', 0, 0)
-    addAnimationByPrefix('sGf', 'hey', 'GF cheer', 18, true)
-    setObjectCamera('sGf', 'other')
-    screenCenter('sGf', 'xy')
-    setProperty('sGf.y', getProperty('sGf.y') + 40)
-    setProperty('sGf.alpha', 0)
-    addLuaSprite('sGf', true)
+  makeAnimatedLuaSprite('sGf', 'characters/GF_assets', 0, 0)
+  addAnimationByPrefix('sGf', 'hey', 'GF cheer', 18, true)
+  setObjectCamera('sGf', 'other')
+  screenCenter('sGf', 'xy')
+  setProperty('sGf.y', getProperty('sGf.y') + 40)
+  setProperty('sGf.alpha', 0)
+  addLuaSprite('sGf', true)
 
-    if getTextFromFile('songs/'..songPath..'/Inst.ogg') then
-      playMusic('../songs/'..songPath..'/Inst', 0.9, true)
-    else
-      playMusic('breakfast', 0.9, true)
+  for i, tag in ipairs(options.option) do
+    if i > 10 then
+      setProperty(tag..'.visible', false)
     end
   end
-end
 
-function onCreatePost()
-  if getDataFromSave('saiko', 'menu') then
-    doTweenAlpha('camOtherAl', 'camOther', 1, 5, 'sineInOut')
-    selectionOp()
-    discord('WINDOWS FUNKIN', 'SELECT:'..getTextString(options.option[selection]))
+  if getTextFromFile('songs/'..songPath..'/Inst.ogg') then
+    playMusic('../songs/'..songPath..'/Inst', 0.9, true)
+  else
+    playMusic('breakfast', 0.9, true)
   end
 end
 
@@ -227,75 +227,101 @@ function selectionOp()
       screenCenter(tag, 'x')
     end
   end
+
+  if selection <= 10 then
+    for i, tag in ipairs(options.option) do
+      if i <= 10 then
+        setProperty(tag..'.visible', true)
+      else
+        setProperty(tag..'.visible', false)
+      end
+    end
+  else
+    for i, tag in ipairs(options.option) do
+      if i >= 11 then
+        setProperty(tag..'.visible', true)
+      else
+        setProperty(tag..'.visible', false)
+      end
+    end
+  end
 end
   
 function onUpdatePost(elapsed)
-  if getDataFromSave('saiko', 'menu') then
-    --dev kit
+  if not getDataFromSave('saiko', 'menu') then
+    return Function_Stop
+  end
+
+  if not selectionStop then
     if getPropertyFromClass('flixel.FlxG', 'keys.justPressed.R') then
       restartSong(true)
     end
-
+  
     if getPropertyFromClass('flixel.FlxG', 'keys.justPressed.TAB') then
       os.execute('start https://raw.githubusercontent.com/Marshverso/Windows-Funkin/refs/heads/main/log.txt')
     end
 
-    --selection
-    if not selectionStop then
-      if keyJustPressed('up') then
-        selection = selection + 1
-      elseif keyJustPressed('down') then
-        selection = selection - 1
-      end
-
-      if selection < 1 then
-        selection = #options.option
-      elseif selection > #options.option then
-        selection = 1
-      end
-  
-      --cool color
-      if keyJustPressed('up') or keyJustPressed('down') then
-        playSound('scrollMenu', 0.7)
-        selectionOp()
-        discord('WINDOWS FUNKIN', 'SELECT:'..getTextString(options.option[selection]))
-      end
-
-      --confirm option
-      if keyJustPressed('accept') then
-        if options.nameUnit[selection] then
-          selectionStop = true
-          doTweenAlpha('storegeAl', 'storege', 1, 0.5, 'linear')
-          doTweenAlpha('sBgAl', 'sBg', 0.7, 0.5, 'linear')
-          discord('WINDOWS FUNKIN', 'Typing storage. . .')
-        else
-          os.execute(options.cmd[selection])
-          discord('WINDOWS FUNKIN', getTextString(options.option[selection]))
-          successed()
-        end
-      end
+    if keyJustPressed('up') then
+      selection = selection + 1
+    elseif keyJustPressed('down') then
+      selection = selection - 1
     end
 
-    --NAME UNIT
-    if selectionStop and options.nameUnit[selection] then
-      if getPropertyFromClass('flixel.FlxG', 'keys.justPressed.ANY') then
-        for i, key in ipairs(keys) do
-          if getPropertyFromClass('flixel.FlxG', 'keys.justPressed.'..key) then
-            os.execute(options.cmd[selection]:gsub(keyUnit, key))
-            discord('WINDOWS FUNKIN', 'chosen storage '..key..'C:')
-    
-            selectionStop = false
-            successed()
-            setProperty('storege.alpha', 0)
-            break
-          end
+    if selection < 1 then
+      selection = #options.option
+    elseif selection > #options.option then
+      selection = 1
+    end
+  
+    --cool color
+    if keyJustPressed('up') or keyJustPressed('down') then
+      playSound('scrollMenu', 0.7)
+      selectionOp()
+      discord('WINDOWS FUNKIN', 'SELECT:'..getTextString(options.option[selection]))
+    end
+
+    --confirm option
+    if keyJustPressed('accept') then
+      if options.cmd[selection]:find(keyUnit) then
+        selectionStop = true
+        doTweenAlpha('storageAl', 'storage', 1, 0.5, 'linear')
+        doTweenAlpha('sBgAl', 'sBg', 0.7, 0.5, 'linear')
+        discord('WINDOWS FUNKIN', 'Typing storage. . .')
+      else
+        if selection == 12 then
+          local cache = io.popen([[powershell -Command "Start-Process cmd -ArgumentList '/c wmic cpu get NumberOfCores /value  /O' -Verb RunAs"]]):match("%d+")
+          local cacheGet = cache:read("*a")
+          cache:close()
+          cacheJunto = string.format('bcdedit /set {current} numproc '..tostring(cacheGet))
+          cmd(cacheJunto)
+        else
+          cmd(options.cmd[selection])
         end
 
-        if keyJustPressed('back') then
+        discord('WINDOWS FUNKIN', getTextString(options.option[selection]))
+      end
+    end
+  end
+
+  --NAME UNIT
+  if selectionStop and options.cmd[selection]:find(keyUnit) then
+    if getPropertyFromClass('flixel.FlxG', 'keys.justPressed.ANY') then
+      for i, key in ipairs(keys) do
+        if getPropertyFromClass('flixel.FlxG', 'keys.justPressed.'..key) then
+          cmd(options.cmd[selection]:gsub(keyUnit, key))
+          discord('WINDOWS FUNKIN', 'chosen storage '..key)
+  
           selectionStop = false
-          doTweenAlpha('storegeAl', 'storege', 0, 0.5, 'linear')
-          doTweenAlpha('sBgAl', 'sBg', 0, 0.5, 'linear')
+          successed()
+          setProperty('storage.alpha', 0)
+          break
         end
+      end
+
+      if keyJustPressed('back') then
+        selectionStop = false
+        doTweenAlpha('storageAl', 'storage', 0, 0.5, 'linear')
+        doTweenAlpha('sBgAl', 'sBg', 0, 0.5, 'linear')
       end
     end
   end
