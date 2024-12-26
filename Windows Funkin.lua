@@ -1,34 +1,112 @@
-local versionW = 10.1
+local versionW = 11
 
 local sysLanguage = os.setlocale(nil, 'collate'):lower()
 
 local keys = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}
 
-local selection = 1
-local selectionStop = false
-
-local ladoS = 1
-local spawnar = {-140, 1420}
-local colors = {'00ff99', '6666ff', 'ff3399'}
-
-local options = {
-  option = {},
-  cmd = {}
-}
+local colors = {'00ff99', '6666ff', 'ff3399', 'ff00ff', '00ffcc'}
 
 local keyUnit = 'NAMEUNIT'
 
---STOP GAME
+local option = {
+  name = {
+    'Check files', 
+    'Check storage',
+    'Check ram (PC RESET)',
+    'Remove watermark',
+    'Optimize storage',
+    'Clear cache',
+    'Clear junk files',
+    'Performance options',
+    'Anti-virus',
+    'Clear dns',
+    'Windows Emulator (PC RESET)',
+    'storage life',
+    'installed applications',
+    'update applications',
+    'system settings',
+    'Remote connection',
+    'maintenance (PC RESET)',
+    'Update log'
+  },
+
+  cmd = {
+    [[sfc /scannow && dism /online /cleanup-image /scanhealth && dism /online /cleanup-image /restorehealth]],
+    [[chkdsk ]]..keyUnit..[[: /f /r /x]],
+    [[mdsched.exe]],
+    [[-NoProfile -ExecutionPolicy Bypass -Command \"Start-Process cmd -ArgumentList ''/c reg add \"\"HKEY_CURRENT_USER\\Control Panel\\Desktop\"\" /v PaintDesktopVersion /t REG_DWORD /d]],
+    [[defrag ]]..keyUnit..[[: /O]],
+    [[del /q/f/s %TEMP% && del /q/f/s TEMP\\*\]],
+    [[cleanmgr]],
+    [[SystemPropertiesPerformance]],
+    [[mrt]],
+    [[ipconfig /flushdns]],
+    [[Dism /online /Enable-Feature /FeatureName:"Containers-DisposableClientVM" -All && Y]],
+    [[wmic diskdrive get status]],
+    [[explorer shell:AppsFolder]],
+    [[winget upgrade --all]],
+    [[msconfig]],
+    [[mstsc]],
+    [[msdt.exe /id MaintenanceDiagnostic]],
+    [[start https://raw.githubusercontent.com/Marshverso/Windows-Funkin/refs/heads/main/log.txt]]
+  },
+
+  select = 1,
+  stop = false
+}
+
+local translation = {
+  --traduzido por marshverso
+  portuguese = {
+    option = {
+      'Verificar arquivos',
+      'Verificar armazenamento',
+      'Verificar ram (REINICIAR PC)',
+      "Remover marca d'água do windows",
+      'Otimizar armazenamento',
+      'Limpar cache',
+      'Limpar arquivos inúteis',
+      'Opções de desempenho',
+      'Anti-virus',
+      'Limpar dns',
+      'Emulador do Windows (REINICIAR PC)',
+      'Vida do armazenamento',
+      'Aplicativos instalados',
+      'Atualizar aplicativos',
+      'Configurações do sistema',
+      'Conexão remota',
+      'Manutenção (REINICIAR PC)',
+      'Lista das atualizações'
+    }
+  },
+
+  --traduzido por Erislwlol e FacheFNF
+  spanish = {
+    option = {
+    'Buscar archivos dañados',
+    'Comproba si el disco está dañado',
+    'Comprobar ram (PC RESET)',
+    "Eliminar marca de agua de Windows",
+    'Optimice su disco',
+    'Borrar la caché',
+    'Eliminar archivos inútiles',
+    'Opciones de rendimiento',
+    'Anti-virus',
+    'Borrar dns',
+    'Emulador de Windows (PC RESET)',
+    'Vida del almacenamiento',
+    'Aplicaciones instaladas',
+    'Actualizar aplicaciones',
+    'Configuraciones del sistema',
+    'Conexión remota',
+    'Mantenimiento (PC RESET)',
+    'Registro de actualizaciones'
+    }
+  }
+}
+
 function onStartCountdown() if getDataFromSave('saiko', 'menu') then return Function_Stop end end
 
---verse script translater
-function verseTranslate(tag, language, text)
-  if sysLanguage:find(language:lower()) then
-    setTextString(tag, text)
-  end
-end
-
---DISCORD WOW 
 function discord(details, state)
   if tonumber(version:sub(1, 3)) >= 0.7 then
     changeDiscordPresence(details, state, nil, false)
@@ -37,140 +115,134 @@ function discord(details, state)
   end
 end
 
---FACILIDADE PARA O DEV
-function addOption(tag, text, comand)
-  table.insert(options.option, tag)
-  table.insert(options.cmd, comand)
-
-  makeLuaText(tag, text, screenWidth, 0, screenHeight-73)
-  setTextSize(tag, 30)
-  setObjectCamera(tag, 'other')
+function text(tag, text, width, x, y)
+  makeLuaText(tag, text, width, x, y)
+  setObjectCamera(tag, 'camOther')
   addLuaText(tag)
+end
 
-  if not (#options.option == 11) then
-    for i=2, #options.option do
-      setProperty(tag..'.y', getProperty(options.option[i-1]..'.y') - 50)
+function makeGf(part, x, y, width, height, color)
+  makeLuaSprite(part..'gf', nil, x+900, y+300)
+  makeGraphic(part..'gf', width, height, color)
+  setObjectCamera(part..'gf', 'camOther')
+  addLuaSprite(part..'gf')
+end
+
+function cmd(cmd)
+  io.popen([[powershell -Command "Start-Process cmd -ArgumentList '/c ]]..cmd..[[' -Verb RunAs"]])
+  playSound('confirmMenu', 0.9)
+end
+
+function selectionOp()
+  for i=1, #option.name do
+    if option.select == i and not (getProperty(i..'option.color') == -256) then
+      setProperty(i..'option.color', getColorFromHex('ffff00'))
+      doTweenX(i..'optionSX', i..'.scale', 1.1, 0.2, 'sineIn')
+    elseif not ((option.select == i) and (getProperty(i..'option.color') == -1)) then
+      setProperty(i..'option.color', getColorFromHex('ffffff'))
+      doTweenX(i..'optionSX', i..'option.scale', 1, 0.2, 'sineIn')
+    end
+  end
+
+  if option.select <= 11 then
+    for i=1, #option.name do
+      if i <= 11 then
+        setProperty(i..'option.visible', true)
+      else
+        setProperty(i..'option.visible', false)
+      end
+    end
+  else
+    for i=1, #option.name do
+      if i >= 12 then
+        setProperty(i..'option.visible', true)
+      else
+        setProperty(i..'option.visible', false)
+      end
     end
   end
 end
 
---FOI SUCESSO ?
-function cmd(cmd)
-  io.popen([[powershell -Command "Start-Process cmd -ArgumentList '/c ]]..cmd..[[' -Verb RunAs"]])
-  successed()
-end
-
---create. . . lol
 function onCreate()
   initSaveData('saiko', 'saiko')
-
-  --fps plus lol
-  --[[setPropertyFromClass('flixel.FlxG', 'drawFramerate', 480)
-  setPropertyFromClass('flixel.FlxG', 'updateFramerate', 480)]]
 
   if not getDataFromSave('saiko', 'menu') then
     return Function_Stop
   end
 
-    setProperty('camGame.visible', false)
-    setProperty('camHUD.visible', false)
-    setProperty('camOther.alpha', 0)
+  setProperty('camGame.visible', false)
+  setProperty('camHUD.visible', false)
+  setProperty('camOther.alpha', 0)
 
-    makeLuaText('title', 'WINDOWS FUNKIN', screenWidth, 10, 68)
-    setTextSize('title', 100)
-    setObjectCamera('title', 'other')
-    setTextAlignment('title', 'center')
-    addLuaText('title')
+  text('versionW', 'v'..versionW, 100, 10, 2)
+  setTextSize('versionW', 40)
+  screenCenter('versionW', 'x')
 
-    doTweenX('titleX', 'title', -10, 3, 'sineOut')
+  text('title', 'WINDOWS\nFUNKIN', 500, screenWidth, 50)
+  setTextSize('title', 100)
+  setTextAlignment('title', 'center')
+  screenCenter('title', 'y')
 
-    --OPTIONS
-    --translator by FacheFNF
-    addOption('va', 'Check files', [[sfc /scannow && dism /online /cleanup-image /scanhealth && dism /online /cleanup-image /restorehealth]])
-    addOption('vh', 'Check storage', [[chkdsk ]]..keyUnit..[[: /f /r /x]])
-    addOption('vr', 'Check ram (PC RESET)', [[mdsched.exe]])
-    addOption('rm', 'Remove watermark (PC RESET)', [[-NoProfile -ExecutionPolicy Bypass -Command \"Start-Process cmd -ArgumentList ''/c reg add \"\"HKEY_CURRENT_USER\\Control Panel\\Desktop\"\" /v PaintDesktopVersion /t REG_DWORD /d]])
-    addOption('desfrag', 'Optimize storage', [[defrag ]]..keyUnit..[[: /O]])
-    addOption('cache', 'Clear cache', [[del /q/f/s %TEMP% && del /q/f/s TEMP\\*\]])
-    addOption('dn', 'Clear junk files', [[cleanmgr]])
-    addOption('odp', 'Performance options', [[SystemPropertiesPerformance]])
-    addOption('av', 'Anti-virus', [[mrt]])
-    addOption('ld', 'Clear dns', [[ipconfig /flushdns]])
-    addOption('sb', 'Windows emulator (PC RESET)', [[Dism /online /Enable-Feature /FeatureName:"Containers-DisposableClientVM" -All && Y]])
-    addOption('an', 'Activates processor cores', [[pica]]--[[bcdedit /set {current} numproc '..tonumber(cmd('wmic cpu get NumberOfCores /value'):match("%d+"))]])
+  text('seta1', '>', 70, 355, 50)
+  setProperty('seta1.angle', -90)
+  setTextSize('seta1', 50)
+
+  text('seta2', '>', 70, 355, 630)
+  setProperty('seta2.angle', 90)
+  setTextSize('seta2', 50)
+
+  --add options
+  for i, op in ipairs(option.name) do
+    if i == 1 or i%12 == 0 then
+      text(i..'option', op, 750, 10, 100)
+    else
+      text(i..'option', op, 750, 10, getProperty((i-1)..'option.y') + 50)
+    end
+
+    setObjectOrder(i..'option', 10)
+    setTextSize(i..'option', 30)
+
+    if i >= 12 then
+      setProperty(i..'option.visible', false)
+    end
+  end
   
-    --pag
-    for i=1,2 do
-      makeLuaText('pag'..i, '>', 0, 0, 0)
-      setTextSize('pag'..i, 60)
-      setObjectCamera('pag'..i, 'other')
+  text('credits', 'Creator: Marshverso (YT and DC)     Menu design: FacheFNF (DC) and Marshverso (YT and DC)     Tradutor português: Marshverso (YT and DC)     English Translators: FacheFNF (DC) and Marshverso (YT and DC)     Traductores español: Erislwlol(X) y FacheFNF (DC)     Beta Testers: FandeFNF (ST) and Erislwlol(X)', 0, screenWidth, screenHeight - 37)
+  setTextSize('credits', 30)
+  setTextAlignment('credits', 'left')
+  doTweenX('creditsX', 'credits', -getProperty('credits.width'), 60, 'linear')
 
-      if i == 1 then
-        setProperty('pag1.angle', -90)
-        screenCenter('pag1', 'x')
-        setProperty('pag1.y', screenHeight-570)
-      else
-        setProperty('pag2.angle', 90)
-        screenCenter('pag2', 'x')
-        setProperty('pag2.y', 670)
-      end
+  makeLuaSprite('bg')
+  makeGraphic('bg', screenWidth, screenHeight, '003380')
+  setObjectCamera('bg', 'camOther')
+  addLuaSprite('bg', false)
 
-      addLuaText('pag'..i)
-      setTextAlignment('pag'..i, 'center')
-    end
+  for i=1,80 do
+    makeLuaSprite('block'..i, '', 1420, getRandomInt(10, 680))
+    makeGraphic('block'..i, 40, 40, 'ffffff')
+    setProperty('block'..i..'.color', getColorFromHex(colors[getRandomInt(1,#colors)]))
+    setObjectCamera('block'..i, 'camOther')
+    setProperty('block'..i..'.angle', getRandomInt(-180, 180))
+    addLuaSprite('block'..i, false)
 
-    --credits
-    makeLuaText('credits', 'Creator: Marshverso (YT and DC)     Menu design: FacheFNF (DC) and Marshverso (YT and DC)     Tradutor português: Marshverso (YT and DC)     English Translators: FacheFNF (DC) and Marshverso (YT and DC)     Traductores español: Erislwlol(X) y FacheFNF (DC)     Beta Testers: FandeFNF (ST) and Erislwlol(X)', 0, screenWidth, 10)
-    setTextSize('credits', 25)
-    setObjectCamera('credits', 'other')
-    setTextAlignment('credits', 'left')
-    addLuaText('credits')
-
-    makeLuaText('log', 'Updates [TAB]', 0, 10, 670)
-    setTextSize('log', 40)
-    setObjectCamera('log', 'other')
-    setTextAlignment('log', 'right')
-    addLuaText('log')
-
-    makeLuaText('versionW', 'v'..versionW, 0, 0, 0)
-    setTextSize('versionW', 40)
-    setObjectCamera('versionW', 'other')
-    setTextAlignment('versionW', 'right')
-    setProperty('versionW.x', screenWidth-getProperty('versionW.width')-10)
-    setProperty('versionW.y', screenHeight-getProperty('versionW.height')-10)
-    addLuaText('versionW')
-
-    doTweenX('creditsX', 'credits', -getProperty('credits.width'), 15, 'linear')
-
-    makeLuaSprite('bg', '')
-    makeGraphic('bg', screenWidth, screenHeight, '060b13')
-    setObjectCamera('bg', 'camOther')
-    addLuaSprite('bg', false)
-
-    for i=1,40 do
-      ladoS = getRandomInt(1,2)
-
-      makeLuaSprite('block'..i, '', spawnar[ladoS], getRandomInt(10, 680))
-      makeGraphic('block'..i, 40, 40, 'ffffff')
-      setProperty('block'..i..'.color', getColorFromHex(colors[getRandomInt(1,#colors)]))
-      setObjectCamera('block'..i, 'other')
-      setProperty('block'..i..'.angle', getRandomInt(-180, 180))
-      addLuaSprite('block'..i, false)
-
-      if ladoS == 1 then 
-        setProperty('block'..i..'.velocity.x', 20)
-        setProperty('block'..i..'.acceleration.x', getRandomInt(10, 30))
-      else
-        setProperty('block'..i..'.velocity.x', -20)
-        setProperty('block'..i..'.acceleration.x', getRandomInt(-10, -30))
-      end
-
-      setProperty('block'..i..'.acceleration.y', getRandomInt(-40, 40))
+    setProperty('block'..i..'.velocity.x', -20)
+    setProperty('block'..i..'.acceleration.x', getRandomInt(-10, -30))
+    setProperty('block'..i..'.acceleration.y', getRandomInt(-40, 40))
       
-      setProperty('block'..i..'.alpha', getRandomInt(0,1))
-      doTweenAngle('block'..i..'An', 'block'..i, getRandomInt(-180, 180), getRandomFloat(2,5), 'sineOut')
-      doTweenAlpha('block'..i..'Al', 'block'..i, 0, getRandomFloat(2,5), 'backin')
-    end
+    setProperty('block'..i..'.alpha', getRandomInt(0,1))
+    doTweenAngle('block'..i..'An', 'block'..i, getRandomInt(-180, 180), getRandomFloat(2,5), 'sineOut')
+    doTweenAlpha('block'..i..'Al', 'block'..i, 0, getRandomFloat(2,15), 'backin')
+  end
+
+  makeLuaSprite('bg1')
+  makeGraphic('bg1', screenWidth, 45, '4d4dff')
+  setObjectCamera('bg1', 'camOther')
+  addLuaSprite('bg1', false)
+
+  makeLuaSprite('bg2', nil, 0, screenHeight - 45)
+  makeGraphic('bg2', screenWidth, 45, '4d4dff')
+  setObjectCamera('bg2', 'camOther')
+  addLuaSprite('bg2', false)
 
   makeLuaSprite('sBg')
   makeGraphic('sBg', screenWidth, screenHeight, '000000')
@@ -178,33 +250,30 @@ function onCreate()
   setProperty('sBg.alpha', 0)
   addLuaSprite('sBg', true)
 
-  makeLuaText('storage', 'ENTER THE LETTER OF THE STORAGE DRIVE', screenWidth, 0, 0)
+  text('storage', 'ENTER THE LETTER OF THE STORAGE DRIVE', screenWidth, 0, 0)
   setTextSize('storage', 50)
-  setObjectCamera('storage', 'other')
   screenCenter('storage', 'y')
   setProperty('storage.alpha', 0)
-  addLuaText('storage')
+  
+  selectionOp()
+  
+  --[[
+  --cabelo
+  makeGf(3, 20, 20, 150, 150, 'ffccff')
+  setProperty('3gf.angle', -15)
+  makeGf(4, 100, 40, 100, 100, 'ffccff')
+  setProperty('4gf.angle', 10)
 
-  makeLuaText('s', 'SUCCESSED', 0, 0, 0)
-  setTextSize('s', 80)
-  setObjectCamera('s', 'other')
-  screenCenter('s', 'x')
-  setProperty('s.alpha', 0)
-  addLuaText('s')
+  --corpo
+  makeGf(5, 15, 160, 70, 150, 'ccccff')
 
-  makeAnimatedLuaSprite('sGf', 'characters/GF_assets', 0, 0)
-  addAnimationByPrefix('sGf', 'hey', 'GF cheer', 18, true)
-  setObjectCamera('sGf', 'other')
-  screenCenter('sGf', 'xy')
-  setProperty('sGf.y', getProperty('sGf.y') + 40)
-  setProperty('sGf.alpha', 0)
-  addLuaSprite('sGf', true)
+  --cabeça
+  makeGf(1, 0, 110, 100, 100, 'ffffff')
+  setProperty('1gf.angle', 43)
 
-  for i, tag in ipairs(options.option) do
-    if i > 10 then
-      setProperty(tag..'.visible', false)
-    end
-  end
+  --cabelo
+  makeGf(2, -50, 70, 230, 90, 'ffccff')
+  setProperty('2gf.angle', -5)]]
 
   if getTextFromFile('songs/'..songPath..'/Inst.ogg') then
     playMusic('../songs/'..songPath..'/Inst', 0.9, true)
@@ -213,113 +282,114 @@ function onCreate()
   end
 end
 
-function selectionOp()
-  for i, tag in ipairs(options.option) do
-    if selection == i and not (getProperty(tag..'.color') == -256) then
-      setProperty(tag..'.color', getColorFromHex('ffff00'))
-      doTweenX(tag..'SX', tag..'.scale', 1.1, 0.2, 'sineIn')
-      setTextString(tag, '< '..getTextString(tag)..' >')
-      screenCenter(tag, 'x')
-    elseif not ((selection == i) and (getProperty(tag..'.color') == -1)) then
-      setProperty(tag..'.color', getColorFromHex('ffffff'))
-      doTweenX(tag..'SX', tag..'.scale', 1, 0.2, 'sineIn')
-      setTextString(tag, getTextString(tag):gsub('< ', ''):gsub(' >', ''))
-      screenCenter(tag, 'x')
-    end
-  end
-
-  if selection <= 10 then
-    for i, tag in ipairs(options.option) do
-      if i <= 10 then
-        setProperty(tag..'.visible', true)
-      else
-        setProperty(tag..'.visible', false)
-      end
-    end
-  else
-    for i, tag in ipairs(options.option) do
-      if i >= 11 then
-        setProperty(tag..'.visible', true)
-      else
-        setProperty(tag..'.visible', false)
-      end
-    end
-  end
-end
-  
-function onUpdatePost(elapsed)
+function onCreatePost()
   if not getDataFromSave('saiko', 'menu') then
     return Function_Stop
   end
 
-  if not selectionStop then
+  -- Obter o código no GitHub
+  local versionWindowsFunkin = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funkin/refs/heads/main/Windows%20Funkin.lua")
+  local scriptContent = versionWindowsFunkin:read("*a")
+  versionWindowsFunkin:close()
+  local versionNumber = scriptContent:match("local versionW = (%d+)")
+
+  --se a versão é desatualizada ou se você não tem ele, ele vai baixar
+  if tonumber(versionW) < tonumber(versionNumber) then
+    local webScript = io.popen("curl -s https://raw.githubusercontent.com/Marshverso/Windows-Funkin/main/Windows%20Funkin.lua")
+    saveFile(scriptName, webScript:read("*a"), true)
+    webScript:close()
+    runTimer('rwf', 0.1)
+  else
+  
+    --animação de entrada
+    doTweenAlpha('camOtherAl', 'camOther', 1, 5, 'sineInOut')
+
+    doTweenX('titleX', 'title', screenWidth/1.9, 3, 'sineOut')
+    
+    for i=1,#option.name do
+      doTweenX(i..'optionX', i..'option', getProperty(i..'option.x'), 3, 'circOut')
+      setProperty(i..'option.x', -getProperty(i..'option.width'))
+    end
+
+    for i=1,2 do
+      doTweenX('seta'..i, 'seta'..i, getProperty('seta'..i..'.x'), 3, 'circOut')
+      setProperty('seta'..i..'.x', -getProperty('seta'..i..'.width'))
+    end
+    --
+
+    --tradução
+    for e, language in pairs(translation) do
+      if sysLanguage:find(e) then
+        for i, text in ipairs(language.option) do
+          setTextString(i..'option', text)
+        end
+      end
+    end
+  end
+end
+
+function onUpdate()
+  if (getDataFromSave('saiko', 'menu') and keyJustPressed('back') and not option.stop) or getPropertyFromClass('flixel.FlxG', 'keys.justPressed.SIX') then
+    setDataFromSave('saiko', 'menu', not getDataFromSave('saiko', 'menu'))
+    restartSong(false)
+    close(false)
+  end
+
+  if not option.stop and getDataFromSave('saiko', 'menu') then
     if getPropertyFromClass('flixel.FlxG', 'keys.justPressed.R') then
       restartSong(true)
     end
-  
-    if getPropertyFromClass('flixel.FlxG', 'keys.justPressed.TAB') then
-      os.execute('start https://raw.githubusercontent.com/Marshverso/Windows-Funkin/refs/heads/main/log.txt')
-    end
 
     if keyJustPressed('up') then
-      selection = selection + 1
+      option.select = option.select - 1
     elseif keyJustPressed('down') then
-      selection = selection - 1
+      option.select = option.select + 1
     end
 
-    if selection < 1 then
-      selection = #options.option
-    elseif selection > #options.option then
-      selection = 1
+    if option.select < 1 then
+      option.select = #option.name
+    elseif option.select > #option.name then
+      option.select = 1
     end
   
     --cool color
     if keyJustPressed('up') or keyJustPressed('down') then
       playSound('scrollMenu', 0.7)
       selectionOp()
-      discord('WINDOWS FUNKIN', 'SELECT:'..getTextString(options.option[selection]))
+      discord('WINDOWS FUNKIN', 'SELECT:'..getTextString(option.name[option.select]))
     end
 
     --confirm option
     if keyJustPressed('accept') then
-      if options.cmd[selection]:find(keyUnit) then
-        selectionStop = true
+      if option.cmd[option.select]:find(keyUnit) and not option.stop then
+        option.stop = true
         doTweenAlpha('storageAl', 'storage', 1, 0.5, 'linear')
         doTweenAlpha('sBgAl', 'sBg', 0.7, 0.5, 'linear')
         discord('WINDOWS FUNKIN', 'Typing storage. . .')
-      else
-        if selection == 12 then
-          local cache = io.popen([[powershell -Command "Start-Process cmd -ArgumentList '/c wmic cpu get NumberOfCores /value  /O' -Verb RunAs"]]):match("%d+")
-          local cacheGet = cache:read("*a")
-          cache:close()
-          cacheJunto = string.format('bcdedit /set {current} numproc '..tostring(cacheGet))
-          cmd(cacheJunto)
-        else
-          cmd(options.cmd[selection])
-        end
-
-        discord('WINDOWS FUNKIN', getTextString(options.option[selection]))
+      elseif not option.stop then
+        cmd(option.cmd[option.select])
+        discord('WINDOWS FUNKIN', getTextString(option.name[option.select]))
       end
     end
   end
 
   --NAME UNIT
-  if selectionStop and options.cmd[selection]:find(keyUnit) then
+  if option.stop and option.cmd[option.select]:find(keyUnit) then
     if getPropertyFromClass('flixel.FlxG', 'keys.justPressed.ANY') then
       for i, key in ipairs(keys) do
         if getPropertyFromClass('flixel.FlxG', 'keys.justPressed.'..key) then
-          cmd(options.cmd[selection]:gsub(keyUnit, key))
+          cmd(option.cmd[option.select]:gsub(keyUnit, key))
           discord('WINDOWS FUNKIN', 'chosen storage '..key)
   
-          selectionStop = false
-          successed()
+          option.stop = false
           setProperty('storage.alpha', 0)
+          setProperty('sBg.alpha', 0)
           break
         end
       end
 
       if keyJustPressed('back') then
-        selectionStop = false
+        option.stop = false
         doTweenAlpha('storageAl', 'storage', 0, 0.5, 'linear')
         doTweenAlpha('sBgAl', 'sBg', 0, 0.5, 'linear')
       end
@@ -327,60 +397,41 @@ function onUpdatePost(elapsed)
   end
 end
 
-function successed()
-  discord('WINDOWS FUNKIN', 'SUCCESSED')
-  playSound('confirmMenu', 0.9)
-
-  setProperty('s.alpha', 1)
-  setProperty('sGf.alpha', 1)
-  setProperty('sBg.alpha', 1)
-
-  doTweenAlpha('sAl', 's', 0, 2, 'backIn')
-  doTweenAlpha('sGfAl', 'sGf', 0, 2, 'backIn')
-  doTweenAlpha('sBgAl', 'sBg', 0, 2, 'backIn')
-end
-
 function onTweenCompleted(tag)
-  --blocks
   if tag == 'titleX' then
-    if getProperty('title.x') == 10 then
-      doTweenX('titleX', 'title', -10, 3, 'sineInOut')
+    if getProperty('title.x') == screenWidth/1.9 then
+      doTweenX('titleX', 'title', screenWidth/1.7, 2.5, 'sineInOut')
     else
-      doTweenX('titleX', 'title', 10, 3, 'sineInOut')
+      doTweenX('titleX', 'title', screenWidth/1.9, 2.5, 'sineInOut')
     end
   end
 
-  for i=1,40 do
+  --blocks
+  for i=1,80 do
     if tag == 'block'..i..'Al' then
-      ladoS = getRandomInt(1,2)
-
       setProperty('block'..i..'.alpha', 1)
       setProperty('block'..i..'.color', getColorFromHex(colors[getRandomInt(1,#colors)]))
 
-      setProperty('block'..i..'.x', spawnar[ladoS])
+      setProperty('block'..i..'.x', 1420)
       setProperty('block'..i..'.y', getRandomInt(10, 680))
 
-      if ladoS == 1 then 
-        setProperty('block'..i..'.acceleration.x', 40)
-        setProperty('block'..i..'.velocity.x', 25)
-      else
-        setProperty('block'..i..'.acceleration.x', -40)
-        setProperty('block'..i..'.velocity.x', -25)
-      end
+      setProperty('block'..i..'.acceleration.x', -40)
+      setProperty('block'..i..'.velocity.x', -25)
 
       setProperty('block'..i..'.acceleration.y', getRandomInt(-40, 40))
       setProperty('block'..i..'.velocity.y', 40)
 
       doTweenAngle('block'..i..'An', 'block'..i, getRandomInt(-180, 180), getRandomFloat(2,5), 'sineOut')
-      doTweenAlpha('block'..i..'Al', 'block'..i, 0, getRandomFloat(2,5), 'backIn')
+      doTweenAlpha('block'..i..'Al', 'block'..i, 0, getRandomFloat(2,15), 'backIn')
     end
   end
 
   if tag == 'creditsX' then
     setProperty('credits.x', screenWidth)
-    doTweenX('creditsX', 'credits', -getProperty('credits.width'), 15, 'linear')
+    doTweenX('creditsX', 'credits', -getProperty('credits.width'), 60, 'linear')
+  end
+
+  if tag == 'rwf' then
+    restartSong(false)
   end
 end
-
---Thank you to everyone who helped with the ideas
---script by marshverso#0000
