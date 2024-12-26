@@ -1,7 +1,21 @@
-                                                                              Mini Update v10.1
+                                                                          Until Next Year (Update v11)
+                                                            -Redesigned menu
+                                                            -Facilitated code for project helpers
+                                                            -Improvements to "Scan for Corrupted Files" and "Clear Cache"
+                                                            -Added "Storage Life"
+                                                            -added "Installed Apps"
+                                                            -added "remote connection"
+                                                            -Added "System Settings"
+                                                            -added "maintenance"
+                                                            -Added "Update apps"
+                                                            -Removed installer from script
+                                                            -Removed "Enable processor cores"
+                                                            -probably the last update of the script
+
+                                                                              (Fix Update v10.1)
                                                             -bug of opening cmd every time starting a song has been fixed
 
-                                                                        30 Stars + Core Update v10
+                                                                          30 Stars + Core (Update v10)
                                                             -added new options "Clear dns" and "Enable processor cores"
                                                             -minor changes in the menu
                                                             -page system
@@ -12,25 +26,25 @@
                                                             -fixed bugs and the bug of not working in previous versions
                                                             -the next updates will be bigger and more robust in content
 
-                                                                              Mini Update v8.2
+                                                                              (Fix Update v8.2)
                                                                       -A correction in the credits
 
-                                                                              Translator Update v8
+                                                                              Translator (Update v8)
                                                                       -Improved translations
                                                                       -There's an intro for the menu
                                                                       -bugs fixs
 
-                                                                              Mini Update v7.51
+                                                                              (Fix Update v7.51)
                                                                       -Added update log
                                                                       -A small change in the menu
                                                                       -Changes in the Portuguese Translation
                                                                       -bugs fixs
 
-                                                                              Rework Update v7
+                                                                              Rework (Update v7)
                                                                       -New design for menu
                                                                       -bugs fixs
 
-                                                                              Online Update v6
+                                                                              Online (Update v6)
                                                                       -Online support
                                                                       -Backup system
                                                                       -Spanish translation by @scarletw 69 
