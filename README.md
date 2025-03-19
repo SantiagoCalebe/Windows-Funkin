@@ -1,14 +1,11 @@
-# Windows-Funkin
-Script designed to help people with weak computers or problems with them
+<h1 align='center'>Windows Funkin</h1>
+<h2 align='center'>Script designed to help people with weak computers or problems with them</h2>
 
-Creator: Marshverso https://www.youtube.com/@Marshversoo
+<h2 align='center'>
+  
+[Marshverso](https://www.youtube.com/@Marshversoo) - Creator and Portuguese Translator.
 
-Menu Design: FacheFNF fachefnf#0000
+FacheFNF (fachefnf) - Menu Design, English, Spanish Translator and Beta Tester.
 
-Portuguese Translator: Marshverso https://www.youtube.com/@Marshversoo
-
-English Translator: FacheFNF fachefnf#0000
-
-Spanish Translator: Erislw https://x.com/erislwlol and FacheFNF fachefnf#0000
-
-Beta Testers: FandeFNF https://steamcommunity.com/id/FandeFNF/ and Erislw https://x.com/erislwlol
+[Erislw](https://x.com/erislwlol) - Beta Tester.
+</h2>
